@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerFacility"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="top"
+        android:background="#FFFFFF"
+        android:elevation="4dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="뒤로가기"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtFacilityName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="2025년도 중랑물재생센터 배드민턴장 1번코트"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnBack"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/reserveButtonLayout"
+        android:layout_marginTop="56dp"
+        android:paddingBottom="96dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Image Carousel Placeholder -->
+
+
+            <!-- 제목+ 사진 -->
+
+
+            <ImageView
+                android:id="@+id/facilityImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/sample_facility" />
+
+
+            <!--날짜 시간 선택-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="날짜시간 선택"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/dateContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:textColor="#908888"
+                    android:textStyle="bold"
+                    tools:text="4월" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <!--“한 번에 하나만 선택되게 (중복 선택 불가)” + “선택된 Chip만 스타일 바뀜”-->
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/dateChipGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleLine="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:checkable="true"
+
+                            android:text="25"
+                            android:textColor="@color/black"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/chip_background"
+                            app:chipCornerRadius="16dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:checkable="true"
+                            android:text="26"
+                            android:textColor="@color/black"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/chip_background"
+                            app:chipCornerRadius="16dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:checkable="true"
+                            android:text="27"
+                            android:textColor="@color/black"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/chip_background"
+                            app:chipCornerRadius="16dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:checkable="true"
+                            android:text="28"
+                            android:textColor="@color/black"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/chip_background"
+                            app:chipCornerRadius="16dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:checkable="true"
+                            android:text="29"
+                            android:textColor="@color/black"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/chip_background"
+                            app:chipCornerRadius="16dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:checkable="true"
+                            android:text="30"
+                            android:textColor="@color/black"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/chip_background"
+                            app:chipCornerRadius="16dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:checkable="true"
+                            android:text="1"
+                            android:textColor="@color/black"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/chip_background"
+                            app:chipCornerRadius="16dp" />
+
+                    </com.google.android.material.chip.ChipGroup>
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
+
+            <!--시간 선택 바-->
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <!-- 시간 라벨 + 선 레이어 (배경) -->
+                    <LinearLayout
+                        android:id="@+id/timelineContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
+
+                        <!-- 9am -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="9am" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="#CCCCCC" />
+                        </LinearLayout>
+                        <!-- 10am -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="10am" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="#CCCCCC" />
+                        </LinearLayout>
+                        <!-- 11am -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="11am" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="#CCCCCC" />
+                        </LinearLayout>
+                        <!-- 12pm -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="12pm" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="#CCCCCC" />
+                        </LinearLayout>
+                        <!-- 1pm -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="1pm" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="#CCCCCC" />
+                        </LinearLayout>
+                        <!-- 2pm -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="2pm" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="#CCCCCC" />
+                        </LinearLayout>
+                        <!-- 3pm -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="3pm" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="#CCCCCC" />
+                        </LinearLayout>
+                        <!-- 4pm -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="4pm" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="#CCCCCC" />
+                        </LinearLayout>
+                        <!-- 5pm -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="5pm" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="#CCCCCC" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 슬롯 레이어 (위에 겹쳐짐) -->
+                    <LinearLayout
+                        android:id="@+id/timeSlotContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="22dp">
+
+                        <!-- 9am ~ 11am 비어있음 -->
+                        <Space
+                            android:layout_width="160dp"
+                            android:layout_height="60dp" />
+
+                        <!-- 11am ~ 12pm 예약 가능 -->
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/bg_time_slot"
+                            android:gravity="center"
+                            android:text="11AM\n~\n12PM"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <!-- 12pm ~ 4pm 비어있음 -->
+                        <Space
+                            android:layout_width="320dp"
+                            android:layout_height="60dp" />
+
+                        <!-- 4pm ~ 5pm 예약 가능 -->
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/bg_time_slot"
+                            android:gravity="center"
+                            android:text="4PM\n~\n5PM"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </FrameLayout>
+            </HorizontalScrollView>
+
+
+            <!--시설 정보-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- 섹션 타이틀 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="구장정보"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- 주소 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="대구시 북구 태평로 161 롯데백화점 대구점 11층 📍"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <!-- 주요 정보 (실내외 / 크기 / 추천인원 / 바닥재) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <!-- 실내외 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="실내외"
+                            android:textColor="#888888" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="야외"
+                            android:textColor="#000000"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- 크기 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="크기"
+                            android:textColor="#888888" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="40 x 20 (m)"
+                            android:textColor="#000000"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- 추천인원 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="추천인원"
+                            android:textColor="#888888" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="6 vs 6"
+                            android:textColor="#000000"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- 바닥재 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="바닥재"
+                            android:textColor="#888888" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="인조잔디"
+                            android:textColor="#000000"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 아이콘 설명줄 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="6">
+
+                    <!-- 예: 주차장 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_parking" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="주차장"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- 샤워실, 냉방시설, 공대여 등은 위와 동일하게 반복 -->
+                    <!-- ... -->
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <!-- 탭 메뉴 -->
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/facilityTabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/green_primary"
+                app:tabIndicatorHeight="3dp"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/black"
+                app:tabTextColor="#888888">
+
+                <com.google.android.material.tabs.TabItem
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="상세 안내" />
+
+                <com.google.android.material.tabs.TabItem
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="이용 안내" />
+
+                <com.google.android.material.tabs.TabItem
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="이용 후기" />
+            </com.google.android.material.tabs.TabLayout>
+
+            <FrameLayout
+                android:id="@+id/facilityTabContent"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="8dp">
+
+                <!-- 상세 안내 -->
+                <LinearLayout
+                    android:id="@+id/layoutTabDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="여기에 시설 상세 정보를 표시합니다."
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <!-- 이용 안내 -->
+                <LinearLayout
+                    android:id="@+id/layoutTabUsage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="운영 시간, 이용 요금 등을 안내합니다."
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <!-- 이용 후기 -->
+                <LinearLayout
+                    android:id="@+id/layoutTabReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="작성된 후기를 보여줍니다."
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- 미니맵 영역 -->
+            <ImageView
+                android:id="@+id/miniMap"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="32dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/sample_map" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 하단 예약 버튼 고정 + 요약 정보 -->
+    <LinearLayout
+        android:id="@+id/reserveButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#000000"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/timeSelectionSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- 총 가격 정보 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/timeSummary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="총 2 시간"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/priceSummary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="130,000 원"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 예약 버튼 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FF4B4B"
+            android:gravity="center"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/btnReserve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="예약하기"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,19 +1,21 @@
 package com.example.seouldata.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.seouldata.FacilityActivity
 import com.example.seouldata.R
 import com.example.seouldata.databinding.FragmentHomeBinding
+import com.example.seouldata.ui.adapter.FacilityAdapter
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 
 // Home 화면 UI 담당
@@ -63,6 +65,16 @@ class HomeFragment : Fragment() {
         }
 
 
+        /////리스트뷰 테스트용
+        val facilityList = listOf("서울 체육관", "잠실 종합운동장", "한강 풋살장")
+        binding.recyclerFacilities.layoutManager = LinearLayoutManager(requireContext())
+        val F_adapter = FacilityAdapter(facilityList) { selectedFacility ->
+            val intent = Intent(requireContext(), FacilityActivity::class.java)
+            startActivity(intent)
+        }
+        binding.recyclerFacilities.adapter = F_adapter
+
+        ////
 
 
         // 원래 있던 텍스트 관찰 코드
