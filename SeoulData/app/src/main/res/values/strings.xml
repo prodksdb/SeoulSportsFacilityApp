@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">SeoulData</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string-array name="category_array">
+        <item>전체</item>
+        <item>축구</item>
+        <item>농구</item>
+        <item>헬스</item>
+        <item>테니스</item>
+        <item>배드민턴</item>
+        <item>수영장</item>
+    </string-array>
+</resources>
