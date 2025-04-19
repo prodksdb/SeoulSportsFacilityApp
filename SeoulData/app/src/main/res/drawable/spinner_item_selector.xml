@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 마우스 hover -->
+    <item android:state_hovered="true" android:drawable="@color/green_primary" />
+    <!-- 포커스 (키보드 이동) -->
+    <item android:state_focused="true" android:drawable="@color/green_primary" />
+    <!-- 눌렀을 때 -->
+    <item android:state_pressed="true" android:drawable="@color/green_primary" />
+    <!-- 기본 -->
+    <item android:drawable="@android:color/white" />
+</selector>
