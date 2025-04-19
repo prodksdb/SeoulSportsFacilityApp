@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +16,7 @@ import com.example.seouldata.FacilityActivity
 import com.example.seouldata.R
 import com.example.seouldata.databinding.FragmentHomeBinding
 import com.example.seouldata.ui.adapter.FacilityAdapter
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 
 // Home 화면 UI 담당
 class HomeFragment : Fragment() {
@@ -49,46 +48,34 @@ class HomeFragment : Fragment() {
 
         // Toolbar를 ActionBar로 등록
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbarHome)
-        // Spinner 어댑터 설정!!
-        val spinner: Spinner = binding.spinnerCategory
 
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.category_array,
-            R.layout.spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter
+        // AutoCompleteTextView 어댑터 설정!!
+        val dropdown: MaterialAutoCompleteTextView = binding.dropdownCategory
+
+        val categories = resources.getStringArray(R.array.category_array).toList()
+
+        // 선택된 항목 표시용 커스텀 layout (원하면 spinner_item 써도 됨)
+        val adapter = ArrayAdapter(requireContext(), R.layout.spinner_dropdown_item, categories)
+        dropdown.setAdapter(adapter)
+
+        // 항목 선택 이벤트 처리
+        dropdown.setOnItemClickListener { parent, view, position, id ->
+            val selectedCategory = parent.getItemAtPosition(position).toString()
+            Toast.makeText(requireContext(), "선택 : $selectedCategory", Toast.LENGTH_SHORT).show()
         }
 
-        // Spinner 선택 이벤트
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val selectedCategory = parent.getItemAtPosition(position).toString()
-                Toast.makeText(requireContext(), "선택 : $selectedCategory", Toast.LENGTH_SHORT)
-                    .show()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // 아무것도 선택되지 않았을 때 처리
-            }
-        }
 
         /////리스트뷰 테스트용
         val facilityList = listOf("서울 체육관", "잠실 종합운동장", "한강 풋살장")
         binding.recyclerFacilities.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = FacilityAdapter(facilityList) { selectedFacility ->
+        val F_adapter = FacilityAdapter(facilityList) { selectedFacility ->
             val intent = Intent(requireContext(), FacilityActivity::class.java)
             startActivity(intent)
         }
-        binding.recyclerFacilities.adapter = adapter
+        binding.recyclerFacilities.adapter = F_adapter
 
         ////
+
 
         // 원래 있던 텍스트 관찰 코드
         val textView: TextView = binding.textToolbarTitle
