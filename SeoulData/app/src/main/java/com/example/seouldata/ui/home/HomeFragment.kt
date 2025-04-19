@@ -1,5 +1,6 @@
 package com.example.seouldata.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +13,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.seouldata.FacilityActivity
 import com.example.seouldata.R
 import com.example.seouldata.databinding.FragmentHomeBinding
+import com.example.seouldata.ui.adapter.FacilityAdapter
 
 // Home 화면 UI 담당
 class HomeFragment : Fragment() {
@@ -52,7 +56,7 @@ class HomeFragment : Fragment() {
             requireContext(),
             R.array.category_array,
             R.layout.spinner_item
-        ).also{ adapter ->
+        ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }
@@ -66,7 +70,8 @@ class HomeFragment : Fragment() {
                 id: Long
             ) {
                 val selectedCategory = parent.getItemAtPosition(position).toString()
-                Toast.makeText(requireContext(), "선택 : $selectedCategory", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "선택 : $selectedCategory", Toast.LENGTH_SHORT)
+                    .show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -74,7 +79,16 @@ class HomeFragment : Fragment() {
             }
         }
 
+        /////리스트뷰 테스트용
+        val facilityList = listOf("서울 체육관", "잠실 종합운동장", "한강 풋살장")
+        binding.recyclerFacilities.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = FacilityAdapter(facilityList) { selectedFacility ->
+            val intent = Intent(requireContext(), FacilityActivity::class.java)
+            startActivity(intent)
+        }
+        binding.recyclerFacilities.adapter = adapter
 
+        ////
 
         // 원래 있던 텍스트 관찰 코드
         val textView: TextView = binding.textToolbarTitle

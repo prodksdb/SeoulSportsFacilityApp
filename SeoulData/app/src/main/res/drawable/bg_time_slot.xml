@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!-- 그림자 효과용 레이어 -->
+<item android:right="1dp" android:bottom="1dp">
+    <shape android:shape="rectangle">
+        <solid android:color="#33000000"/> <!-- 반투명 검정 그림자 -->
+        <corners android:radius="12dp" />
+    </shape>
+</item>
+
+<!-- 실제 배경 레이어 -->
+<item>
+    <shape android:shape="rectangle">
+        <solid android:color="@color/white"/>
+        <stroke android:width="3dp" android:color="@color/green_primary"/>
+        <corners android:radius="12dp"/>
+    </shape>
+</item>
+
+</layer-list>
