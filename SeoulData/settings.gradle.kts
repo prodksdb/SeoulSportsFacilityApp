@@ -17,6 +17,13 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+
+    // Version Catalog 설정 추가
+    //versionCatalogs {
+    //   create("libs") {
+    //  from(files("gradle/libs.versions.toml"))
+    // }
+    //}
 }
 
 rootProject.name = "SeoulData"

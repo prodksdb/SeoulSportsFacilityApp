@@ -3,7 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-
+    <string name="seoul_api_key">764f75724c72686636314f7a434544</string>
     <string-array name="category_array">
         <item>전체</item>
         <item>축구</item>

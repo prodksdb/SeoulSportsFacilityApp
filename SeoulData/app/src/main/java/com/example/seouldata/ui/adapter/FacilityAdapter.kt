@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class FacilityAdapter(
-    private val items: List<String>,
+    private var items: MutableList<String>,
     private val onClick: (String) -> Unit
 ) : RecyclerView.Adapter<FacilityAdapter.FacilityViewHolder>() {
 
@@ -31,4 +31,11 @@ class FacilityAdapter(
     }
 
     override fun getItemCount(): Int = items.size
+
+    fun addItems(newItems: List<String>) {
+        val start = items.size
+        (items as MutableList).addAll(newItems)
+        notifyItemRangeInserted(start, newItems.size)
+    }
+
 }
