@@ -2,6 +2,7 @@ package com.example.seouldata
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.seouldata.databinding.ActivityFacilityBinding
+import com.example.seouldata.dto.FacilitySummaryItem
 import com.google.android.material.tabs.TabLayout
 
 class FacilityActivity : AppCompatActivity() {
@@ -35,6 +37,15 @@ class FacilityActivity : AppCompatActivity() {
         backBtn.setOnClickListener {
             finish()
         }
+
+        //intent 받기
+        val item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("facility", FacilitySummaryItem::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra("facility")
+        }
+
 
         //탭 선택에 따라 내용 전환
         binding.facilityTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

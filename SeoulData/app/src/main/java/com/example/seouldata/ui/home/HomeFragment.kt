@@ -18,8 +18,10 @@ import com.example.seouldata.FacilityActivity
 import com.example.seouldata.R
 import com.example.seouldata.api.RetrofitClient
 import com.example.seouldata.databinding.FragmentHomeBinding
+import com.example.seouldata.dto.FacilitySummaryItem
 import com.example.seouldata.ui.adapter.FacilityAdapter
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 // Home 화면 UI 담당
@@ -64,21 +66,12 @@ class HomeFragment : Fragment() {
 
         // 항목 선택 이벤트 처리
         dropdown.setOnItemClickListener { parent, view, position, id ->
-            val selectedCategory = parent.getItemAtPosition(position).toString()
+            selectedCategory = parent.getItemAtPosition(position).toString()
+            if (selectedCategory == "전체") selectedCategory = ""
             Toast.makeText(requireContext(), "선택 : $selectedCategory", Toast.LENGTH_SHORT).show()
+            currentPage = 1
+            requestFacilities(selectedCategory)
         }
-
-
-        /////리스트뷰 테스트용
-//        val facilityList = listOf("서울 체육관", "잠실 종합운동장", "한강 풋살장")
-//        binding.recyclerFacilities.layoutManager = LinearLayoutManager(requireContext())
-//        val F_adapter = FacilityAdapter(facilityList) { selectedFacility ->
-//            val intent = Intent(requireContext(), FacilityActivity::class.java)
-//            startActivity(intent)
-//        }
-//        binding.recyclerFacilities.adapter = F_adapter
-
-        ////
 
 
         // 원래 있던 텍스트 관찰 코드
@@ -91,36 +84,12 @@ class HomeFragment : Fragment() {
         return binding.root  // 완성된 전체 화면 View를 반환하는 부분!!
     }
 
+    private var selectedCategory = ""
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val apiKey = getString(R.string.seoul_api_key)
-        val start = (currentPage - 1) * pageSize + 1
-        val end = currentPage * pageSize
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            val response = RetrofitClient.instance.getFacilities(apiKey, start, end)
-            if (response.isSuccessful) {
-                val rows = response.body()
-                    ?.getAsJsonObject("ListPublicReservationSport")
-                    ?.getAsJsonArray("row")
-
-                val facilityList = rows?.map { item ->
-                    item.asJsonObject.get("SVCNM").asString
-                } ?: emptyList()
-
-                val F_adapter = FacilityAdapter(facilityList.toMutableList()) { selectedFacility ->
-                    val intent = Intent(requireContext(), FacilityActivity::class.java)
-                    startActivity(intent)
-                }
-
-                binding.recyclerFacilities.layoutManager = LinearLayoutManager(requireContext())
-                binding.recyclerFacilities.adapter = F_adapter
-
-                setupRecyclerScrollListener() // 🎯 스크롤 리스너 꼭 여기에!
-                currentPage++
-            }
-        }
+        requestFacilities(selectedCategory)
     }
 
 
@@ -144,25 +113,69 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun loadNextPage() {
-        isLoading = true
+    private fun requestFacilities(category: String) {
+        val apiKey = getString(R.string.seoul_api_key)
         val start = (currentPage - 1) * pageSize + 1
         val end = currentPage * pageSize
-
-        val apiKey = getString(R.string.seoul_api_key)
+        var minClassNm = category
 
         viewLifecycleOwner.lifecycleScope.launch {
-            val response = RetrofitClient.instance.getFacilities(apiKey, start, end)
+            val response =
+                RetrofitClient.instance.getFacilitiesByCategory(apiKey, start, end, minClassNm)
             if (response.isSuccessful) {
                 val rows = response.body()
                     ?.getAsJsonObject("ListPublicReservationSport")
                     ?.getAsJsonArray("row")
 
-                val newItems = rows?.map {
-                    it.asJsonObject.get("SVCNM").asString
+                val facilityList = rows?.map { item ->
+                    Gson().fromJson(item, FacilitySummaryItem::class.java)
                 } ?: emptyList()
 
-                (binding.recyclerFacilities.adapter as FacilityAdapter).addItems(newItems)
+                //전체 객체 넘김
+                val F_adapter = FacilityAdapter(facilityList.toMutableList()) { selectedFacility ->
+                    val intent = Intent(requireContext(), FacilityActivity::class.java)
+                    intent.putExtra(
+                        "facilityItem",
+                        selectedFacility
+                    )
+                    startActivity(intent)
+                }
+
+
+                binding.recyclerFacilities.layoutManager = LinearLayoutManager(requireContext())
+                binding.recyclerFacilities.adapter = F_adapter
+
+                setupRecyclerScrollListener() // 🎯 스크롤 리스너 꼭 여기에!
+                currentPage++
+            }
+        }
+    }
+
+    private fun loadNextPage() {
+        isLoading = true
+        val start = (currentPage - 1) * pageSize + 1
+        val end = currentPage * pageSize
+        val apiKey = getString(R.string.seoul_api_key)
+        var minClassNm = selectedCategory
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            val response =
+                RetrofitClient.instance.getFacilitiesByCategory(apiKey, start, end, minClassNm)
+            if (response.isSuccessful) {
+                val rows = response.body()
+                    ?.getAsJsonObject("ListPublicReservationSport")
+                    ?.getAsJsonArray("row")
+
+//                val newItems = rows?.map {
+//                    it.asJsonObject.get("SVCNM").asString
+//                } ?: emptyList()
+
+
+                val facilityList = rows?.map { item ->
+                    Gson().fromJson(item, FacilitySummaryItem::class.java)
+                } ?: emptyList()
+
+                (binding.recyclerFacilities.adapter as FacilityAdapter).addItems(facilityList)
                 currentPage++
                 isLoading = false
             }
