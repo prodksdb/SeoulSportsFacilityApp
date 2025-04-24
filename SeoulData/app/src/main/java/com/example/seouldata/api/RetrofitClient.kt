@@ -19,11 +19,17 @@ object RetrofitClient {
     }
 }
 
+
 interface SeoulApiService {
-    @GET("{key}/json/ListPublicReservationSport/{start}/{end}/")
-    suspend fun getFacilities(
+
+    //소분류명(ex 테니스장) 기준 시설 정보 리스트 불러오기
+    @GET("{key}/json/ListPublicReservationSport/{start}/{end}/{minClassNm}/")
+    suspend fun getFacilitiesByCategory(
         @Path("key") apiKey: String,
         @Path("start") startIndex: Int,
-        @Path("end") endIndex: Int
+        @Path("end") endIndex: Int,
+        @Path("minClassNm") minClassNm: String
     ): Response<JsonObject>
+
+
 }
