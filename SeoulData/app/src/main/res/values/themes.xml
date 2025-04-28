@@ -12,7 +12,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/black_primary</item>
         <item name="android:windowLightStatusBar">false</item> <!-- 상태바 텍스트를 흰색으로 -->
-        
 
+
+
+    </style>
+
+    <style name="Theme.SeoulData.splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 </resources>

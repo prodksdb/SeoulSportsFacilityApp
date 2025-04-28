@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.SeoulData" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.SeoulData.splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -16,7 +16,7 @@
 
         <!-- 배경 흰색 설정 -->
         <item name="android:windowSplashScreenBackground">@android:color/white</item>
-
+        <item name="android:windowBackground">@android:color/white</item>
         <!-- 아래 2개를 null로 만들어 시스템 아이콘 숨김 -->
         <item name="android:windowSplashScreenAnimatedIcon">@null</item>
         <item name="android:windowSplashScreenIconBackgroundColor">@null</item>

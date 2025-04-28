@@ -6,19 +6,31 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.NestedScrollView
+import com.bumptech.glide.Glide
 import com.example.seouldata.databinding.ActivityFacilityBinding
 import com.example.seouldata.dto.FacilitySummaryItem
+import com.example.seouldata.util.TouchWrapper
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.tabs.TabLayout
 
-class FacilityActivity : AppCompatActivity() {
+class FacilityActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityFacilityBinding
+    private var facilityItem: FacilitySummaryItem? = null
+    private lateinit var map: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +50,54 @@ class FacilityActivity : AppCompatActivity() {
             finish()
         }
 
+        val scrollView = findViewById<NestedScrollView>(R.id.scrollView)
+        val touchWrapper = findViewById<TouchWrapper>(R.id.mapTouchWrapper)
+
+        touchWrapper.onTouch = {
+            scrollView.requestDisallowInterceptTouchEvent(true)
+        }
+
+        // 맵 준비
+        val mapFragment = SupportMapFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.facilityMapContainer, mapFragment)
+            .commit()
+
+        mapFragment.getMapAsync(this)
+
         //intent 받기
-        val item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("facility", FacilitySummaryItem::class.java)
+       facilityItem  = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("facilityItem", FacilitySummaryItem::class.java)
         } else {
             @Suppress("DEPRECATION")
-            intent.getParcelableExtra("facility")
+            intent.getParcelableExtra("facilityItem")
         }
+
+        // 2. View에 바인딩하기
+        facilityItem?.let {
+            binding.txtFacilityName.text = it.svcName
+            binding.placeLocation.text=it.placeName
+
+            val rawText = facilityItem?.detailContent ?: ""
+            val formattedText = rawText
+                //.replace("1.", "\n\n1.")   // 숫자-점 패턴
+                .replace("2.", "\n\n2.")
+                .replace("3.", "\n\n3.")
+                .replace("◎", "\n\n◎")    // 항목 구분자
+                .replace("※", "\n※")     // 주의사항 강조
+            binding.tvDetailInfo.text=formattedText
+
+            // 🔥 이미지 URL을 ImageView에 Glide로 세팅
+            Glide.with(this)
+                .load(it.imgUrl) // URL
+                .placeholder(R.drawable.img_loading) // 로딩 중 표시할 기본 이미지 (선택)
+                .error(R.drawable.img_loading) // 실패 시 표시할 기본 이미지 (선택)
+                .into(binding.facilityImage)
+
+            // 필요한 만큼 추가로 바인딩 가능!
+        }
+
+
 
 
         //탭 선택에 따라 내용 전환
@@ -138,4 +191,20 @@ class FacilityActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+
+        facilityItem?.let { item ->
+            val latitude = item.y.toDouble()
+            val longitude = item.x.toDouble()
+            val facilityLocation = LatLng(latitude, longitude)
+
+            map.addMarker(
+                MarkerOptions()
+                    .position(facilityLocation)
+                    .title(item.placeName)
+            )
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(facilityLocation, 15f))
+    }}
 }
