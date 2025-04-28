@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
+
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -49,6 +51,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
     testImplementation(libs.junit)
     implementation(libs.androidx.activity)
     androidTestImplementation(libs.androidx.junit)
@@ -60,7 +64,10 @@ dependencies {
     implementation(libs.coroutines.android)
     implementation(libs.lifecycle.runtime.ktx)
     implementation("com.github.bumptech.glide:glide:4.16.0")
-    implementation ("com.google.android.gms:play-services-maps:18.2.0")
-    implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
 
 }
