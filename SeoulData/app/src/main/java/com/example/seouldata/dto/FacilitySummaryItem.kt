@@ -1,5 +1,6 @@
 package com.example.seouldata.dto
 
+import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
@@ -31,7 +32,13 @@ data class FacilitySummaryItem(
     @SerializedName("REVSTDDAYNM") val cancelRuleName: String?,
     @SerializedName("REVSTDDAY") val cancelRuleValue: String?
 
-) : Parcelable
+) : Parcelable{
+
+    override fun describeContents(): Int {
+        return 0
+    }
+}
+
 
 data class FacilityApiResponse(
     @SerializedName("list_total_count") val totalCount: Int,

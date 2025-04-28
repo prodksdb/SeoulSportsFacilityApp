@@ -44,7 +44,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Scrollable Content -->
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -443,7 +443,10 @@
                     android:textStyle="bold" />
 
                 <!-- 주소 -->
+
+                <!-- 주요 정보 (실내외 / 크기 / 추천인원 / 바닥재) -->
                 <TextView
+                    android:id="@+id/placeLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -451,7 +454,6 @@
                     android:textColor="#333333"
                     android:textSize="14sp" />
 
-                <!-- 주요 정보 (실내외 / 크기 / 추천인원 / 바닥재) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -617,6 +619,13 @@
                 android:layout_height="300dp"
                 android:layout_marginTop="8dp">
 
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/scrollTabDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible">
+
+
                 <!-- 상세 안내 -->
                 <LinearLayout
                     android:id="@+id/layoutTabDetail"
@@ -627,13 +636,22 @@
                     android:visibility="visible">
 
                     <TextView
+                        android:id="@+id/tv_detailInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="여기에 시설 상세 정보를 표시합니다."
                         android:textSize="16sp" />
+
+
                 </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
 
                 <!-- 이용 안내 -->
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollTabUsage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
                 <LinearLayout
                     android:id="@+id/layoutTabUsage"
                     android:layout_width="match_parent"
@@ -648,8 +666,14 @@
                         android:text="운영 시간, 이용 요금 등을 안내합니다."
                         android:textSize="16sp" />
                 </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
 
                 <!-- 이용 후기 -->
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollTabReview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
                 <LinearLayout
                     android:id="@+id/layoutTabReview"
                     android:layout_width="match_parent"
@@ -664,20 +688,28 @@
                         android:text="작성된 후기를 보여줍니다."
                         android:textSize="16sp" />
                 </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
             </FrameLayout>
 
             <!-- 미니맵 영역 -->
-            <ImageView
-                android:id="@+id/miniMap"
+            <com.example.seouldata.util.TouchWrapper
+                android:id="@+id/mapTouchWrapper"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="32dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/sample_map" />
+                android:layout_height="200dp"
+                android:layout_marginTop="16dp">
+
+
+            <FrameLayout
+                android:id="@+id/facilityMapContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                />
+            </com.example.seouldata.util.TouchWrapper>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- 하단 예약 버튼 고정 + 요약 정보 -->
     <LinearLayout

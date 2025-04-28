@@ -4,6 +4,7 @@
     <!-- 🔹 외부 API 사용을 위한 필수 권한 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -17,10 +18,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB7rplU63v0dyihJmpEuk0QT8CXnQUJw8g" />
+
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.SeoulData"> <!-- 상태바 없애기 -->
+            android:theme="@style/Theme.SeoulData.splash"> <!-- 상태바 없애기 -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
