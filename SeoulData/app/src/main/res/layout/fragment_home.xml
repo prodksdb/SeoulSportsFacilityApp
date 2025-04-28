@@ -73,7 +73,6 @@
                     android:padding="8dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.Toolbar>
@@ -94,7 +93,7 @@
             android:id="@+id/icon_location"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_location_on" /> <!-- drawable에 아이콘 추가 필요 -->
+            android:src="@drawable/baseline_assistant_navigation_24" /> <!-- drawable에 아이콘 추가 필요 -->
 
         <TextView
             android:id="@+id/text_location"

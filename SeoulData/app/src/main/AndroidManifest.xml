@@ -4,6 +4,12 @@
     <!-- 🔹 외부 API 사용을 위한 필수 권한 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- 위치 정보 쓰기 위함 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+
+
 
     <application
         android:allowBackup="true"
