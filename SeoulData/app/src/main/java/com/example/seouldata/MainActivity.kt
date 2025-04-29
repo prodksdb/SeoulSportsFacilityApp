@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.seouldata.databinding.ActivityMainBinding
+import com.example.seouldata.util.UserExpManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 출석 체크
+        UserExpManager.checkAttendanceAndGiveReward(this)
 
         val navView: BottomNavigationView = binding.navView
 

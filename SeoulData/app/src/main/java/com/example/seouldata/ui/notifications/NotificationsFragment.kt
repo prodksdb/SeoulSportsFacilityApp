@@ -1,11 +1,17 @@
 package com.example.seouldata.ui.notifications
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.seouldata.LoginActivity
+import com.example.seouldata.R
 import com.example.seouldata.databinding.FragmentNotificationsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,6 +44,10 @@ class NotificationsFragment : Fragment() {
         val user = FirebaseAuth.getInstance().currentUser
         val uid = user?.uid
 
+        binding.btnLogout.setOnClickListener {
+            logout(requireContext())
+        }
+
         if (uid != null) {
             val db = FirebaseFirestore.getInstance()
             db.collection("users").document(uid)
@@ -60,6 +70,15 @@ class NotificationsFragment : Fragment() {
                     // 에러 처리
                 }
         }
+    }
+
+    fun logout(context: Context) {
+        val prefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        prefs.edit().clear().apply()
+
+        val intent = Intent(context, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        context.startActivity(intent)
     }
 
     override fun onDestroyView() {

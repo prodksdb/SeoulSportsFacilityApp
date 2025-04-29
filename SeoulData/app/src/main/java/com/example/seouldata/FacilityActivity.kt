@@ -66,7 +66,7 @@ class FacilityActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         //intent 받기
-       facilityItem  = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+       facilityItem  = if (Build.VERSION.SDK_INT >= 33) {
             intent.getParcelableExtra("facilityItem", FacilitySummaryItem::class.java)
         } else {
             @Suppress("DEPRECATION")
