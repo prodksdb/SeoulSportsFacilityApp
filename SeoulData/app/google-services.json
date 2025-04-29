@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "936609664737",
+    "project_id": "seoul-sports-facility",
+    "storage_bucket": "seoul-sports-facility.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:936609664737:android:e6d7fabf0ee5d305af71a0",
+        "android_client_info": {
+          "package_name": "com.example.seouldata"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "936609664737-c0kt295135p7t66cd37aefahofvti40o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.seouldata",
+            "certificate_hash": "7335120bab1b6a2f765d159fa6cf1602ef7e9967"
+          }
+        },
+        {
+          "client_id": "936609664737-kkvgg5chpra3ehvkbt0q8peqmkgdstmr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.seouldata",
+            "certificate_hash": "1b9e9fa0e53e76e21d3e3ace701c6a2bf10bcff2"
+          }
+        },
+        {
+          "client_id": "936609664737-ik8m9geinqvto0g0kg3k2onv9j7p6bdh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcOuMiA64pqmaL0lVHx5wfU3csNyzahRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "936609664737-ik8m9geinqvto0g0kg3k2onv9j7p6bdh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
