@@ -194,17 +194,18 @@ class FacilityActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-
-        facilityItem?.let { item ->
-            val latitude = item.y.toDouble()
-            val longitude = item.x.toDouble()
-            val facilityLocation = LatLng(latitude, longitude)
-
-            map.addMarker(
-                MarkerOptions()
-                    .position(facilityLocation)
-                    .title(item.placeName)
-            )
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(facilityLocation, 15f))
-    }}
+//
+//        facilityItem?.let { item ->
+//            val latitude = item.y.toDouble()
+//            val longitude = item.x.toDouble()
+//            val facilityLocation = LatLng(latitude, longitude)
+//
+//            map.addMarker(
+//                MarkerOptions()
+//                    .position(facilityLocation)
+//                    .title(item.placeName)
+//            )
+//            map.moveCamera(CameraUpdateFactory.newLatLngZoom(facilityLocation, 15f))
+//    }
+}
 }
