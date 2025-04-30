@@ -13,7 +13,7 @@ object UserExpManager {
     private val levelUpThreshold = 50L // 테스트용: 50 경험치로 레벨업
 
     // 경험치 추가 함수
-     fun addExperienceAndCheckLevelUp(expToAdd: Long,  context: Context) {
+    fun addExperienceAndCheckLevelUp(expToAdd: Long, context: Context) {
         val user = FirebaseAuth.getInstance().currentUser ?: return
         val userId = user.uid
         val db = FirebaseFirestore.getInstance()
@@ -33,7 +33,7 @@ object UserExpManager {
                     // 레벨업 체크
                     if (exp >= levelUpThreshold) {
                         level++
-                        exp -=  levelUpThreshold // 남은 경험치는 다음 레벨로 넘김
+                        exp -= levelUpThreshold // 남은 경험치는 다음 레벨로 넘김
 
                         // 보상 아이템 지급
                         when (level) {
@@ -64,29 +64,44 @@ object UserExpManager {
                 }
             }
     }
+
     //앱 실행 시 (출석 보상)
     fun checkAttendanceAndGiveReward(context: Context) {
-        val prefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-        val last = prefs.getString("lastAttendanceDate", null)
+        val user = FirebaseAuth.getInstance().currentUser ?: return
+        val userId = user.uid
+        val db = FirebaseFirestore.getInstance()
+        val userDocRef = db.collection("users").document(userId)
+
         val today = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
 
-        if (last != today) {
-            addExperienceAndCheckLevelUp(30L, context)
+        userDocRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val last = document.getString("lastAttendanceDate")
 
-            prefs.edit().putString("lastAttendanceDate", today).apply()
+                    if (last != today) {
+                        // 보상 지급
+                        addExperienceAndCheckLevelUp(30L, context)
 
-            // 다이얼로그 띄우기
-            val dialog = AlertDialog.Builder(context)
-                .setTitle("출석 보상")
-                .setMessage("출석 보상으로 30XP를 얻었어요!")
-                .create()
-            dialog.setCanceledOnTouchOutside(true) // 다이얼로그 밖 터치하면 끄기
-            dialog.show()
+                        // Firestore에 출석 날짜 저장
+                        userDocRef.update("lastAttendanceDate", today)
 
-        } else {
-            Log.d("ExpManager", "이미 출석 보상 받음")
-        }
+                        // SharedPreferences도 동기화 (선택사항)
+                        context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                            .edit().putString("lastAttendanceDate", today).apply()
+
+                        AlertDialog.Builder(context)
+                            .setTitle("🎉 출석 보상")
+                            .setMessage("출석 보상으로 30XP를 얻었어요!")
+                            .create()
+                            .apply { setCanceledOnTouchOutside(true); show() }
+                    } else {
+                        Log.d("ExpManager", "이미 출석 보상 받음 (서버 기준)")
+                    }
+                }
+            }
     }
+
     //예약 성공 시 보상
     fun saveUserToPrefs(context: Context, exp: Long, level: Long, inventory: List<String>) {
         val prefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
@@ -97,8 +112,6 @@ object UserExpManager {
             apply()
         }
     }
-
-
 
 
 }
