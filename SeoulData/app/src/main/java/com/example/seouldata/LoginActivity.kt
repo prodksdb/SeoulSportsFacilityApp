@@ -2,7 +2,6 @@ package com.example.seouldata
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,8 +17,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 private const val TAG = "LoginActivity 싸피"
+
 class LoginActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
@@ -79,7 +82,8 @@ class LoginActivity : AppCompatActivity() {
                     val userId = user?.uid ?: return@addOnCompleteListener
                     val userName = user.displayName ?: "이름없는유저"
 
-                    val docRef = FirebaseFirestore.getInstance().collection("users").document(userId)
+                    val docRef =
+                        FirebaseFirestore.getInstance().collection("users").document(userId)
                     docRef.get()
                         .addOnSuccessListener { document ->
                             if (document != null && document.exists()) {
@@ -108,18 +112,26 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun joinNewUser(userId: String, nickname: String) {
+        val today = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
+
         val newUserData = hashMapOf(
             "nickname" to nickname,
             "exp" to 0,
             "level" to 1,
             "characterSkin" to "default",
-            "inventory" to arrayListOf<String>()
+            "inventory" to arrayListOf<String>(),
+            "lastAttendanceDate" to today
         )
 
         FirebaseFirestore.getInstance().collection("users").document(userId)
             .set(newUserData)
             .addOnSuccessListener {
-                UserExpManager.saveUserToPrefs(this, 0, 1, emptyList())
+                UserExpManager.saveUserToPrefs(
+                    context = this,
+                    exp = 0,
+                    level = 1,
+                    inventory = emptyList()
+                )
                 Toast.makeText(this, "$nickname 님 환영합니다!", Toast.LENGTH_SHORT).show()
                 goToMain()
             }
