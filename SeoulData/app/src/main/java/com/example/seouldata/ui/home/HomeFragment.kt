@@ -2,20 +2,16 @@ package com.example.seouldata.ui.home
 
 import com.example.seouldata.ui.decorations.VerticalSpaceItemDecoration
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import com.google.android.gms.location.LocationRequest
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -97,27 +93,29 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dropdown: AutoCompleteTextView = binding.categoryDropdown
-        val adapter = ArrayAdapter.createFromResource(
-            requireContext(),       // 현재 Fragment의 context
-            R.array.category,       // string.xml의 <string-array name="category"> 배열
-            android.R.layout.simple_list_item_1  // 각 항목을 표시할 기본 레이아웃
-        )
-        dropdown.setAdapter(adapter)
+        setupCategoryDropdown()
+//        val dropdown: AutoCompleteTextView = binding.categoryDropdown
+//        val adapter = ArrayAdapter.createFromResource(
+//            requireContext(),       // 현재 Fragment의 context
+//            R.array.category,       // string.xml의 <string-array name="category"> 배열
+//            android.R.layout.simple_list_item_1  // 각 항목을 표시할 기본 레이아웃
+//        )
+//        dropdown.setAdapter(adapter)
+//
+//        // 초기값 설정
+//        dropdown.setText("전체", false)
+//
+//        // 선택 이벤트 리스너 추가
+//        dropdown.setOnItemClickListener { parent, view, position, id ->
+//            val selected = parent.getItemAtPosition(position).toString()
+//            Toast.makeText(requireContext(), "$selected 선택!!", Toast.LENGTH_SHORT).show()
+//
+//            binding.progressBar.visibility = View.VISIBLE
+//            binding.textEmpty.visibility = View.GONE
+//        }
 
-        // 초기값 설정
-        dropdown.setText("전체", false)
 
-        // 선택 이벤트 리스너 추가
-        dropdown.setOnItemClickListener { parent, view, position, id ->
-            val selected = parent.getItemAtPosition(position).toString()
-            Toast.makeText(requireContext(), "$selected 선택!!", Toast.LENGTH_SHORT).show()
-
-            binding.progressBar.visibility = View.VISIBLE
-            binding.textEmpty.visibility = View.GONE
-        }
-
-        // 현위치 갱신하는 버튼
+    // 현위치 갱신하는 버튼
         binding.iconLocation.setOnClickListener {
             // 위치 권한 있으면 현재 위치 가져오기
             if (RequestPermissionUtil.hasLocationPermission(requireActivity())) {
@@ -128,6 +126,49 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
+    private fun setupCategoryDropdown() {
+        val categoryList = resources.getStringArray(R.array.category).toList()
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categoryList)
+        val dropdown = binding.categoryDropdown
+
+        val prevSelection = dropdown.text.toString()
+        dropdown.setAdapter(adapter)
+
+        if (categoryList.contains(prevSelection)) {
+            dropdown.setText(prevSelection, false)
+        } else {
+            dropdown.setText("전체", false)
+        }
+
+        dropdown.setOnItemClickListener { parent, _, position, _ ->
+            val selected = parent.getItemAtPosition(position).toString()
+            Toast.makeText(requireContext(), "$selected 선택!", Toast.LENGTH_SHORT).show()
+            filterFacilities()
+        }
+    }
+
+    private fun filterFacilities() {
+        val selected = binding.categoryDropdown.text.toString()
+        val filteredList = if (selected == "전체") {
+            facilityList
+        } else {
+            facilityList.filter { it.minClassNm.trim() == selected }
+        }
+
+        facilityAdapter.updateItems(filteredList)
+
+        if (filteredList.isEmpty()) {
+            binding.recyclerFacilities.visibility = View.GONE
+            binding.textEmpty.visibility = View.VISIBLE
+        } else {
+            binding.recyclerFacilities.visibility = View.VISIBLE
+            binding.textEmpty.visibility = View.GONE
+        }
+
+        binding.progressBar.visibility = View.GONE
+    }
+
 
     override fun onStart() {
         super.onStart()
@@ -305,27 +346,8 @@ class HomeFragment : Fragment() {
 
             facilityAdapter.notifyDataSetChanged()
 
-            // 여기부터 Spinner의 현재 선택값으로 추가 필터링!
-            val selected = binding.categoryDropdown.text.toString()
-            val filteredList = if (selected == "전체") {
-                facilityList
-            } else {
-                facilityList.filter { it.minClassNm == selected }
-            }
-
-            // 어댑터에 필터링 결과 적용
-            facilityAdapter.updateItems(filteredList)
-
-            // 리스트가 있으면 RecyclerView를 보이게 설정
-            if (filteredList.isEmpty()) {
-                binding.recyclerFacilities.visibility = View.GONE
-                binding.textEmpty.visibility = View.VISIBLE
-            } else {
-                binding.recyclerFacilities.visibility = View.VISIBLE
-                binding.textEmpty.visibility = View.GONE
-            }
-
-            binding.progressBar.visibility = View.GONE
+            setupCategoryDropdown()
+            filterFacilities()
         }
 
     }
