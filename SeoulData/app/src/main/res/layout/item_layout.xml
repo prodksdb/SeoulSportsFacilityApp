@@ -1,56 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
     android:layout_margin="8dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:backgroundTint="@android:color/white"
-    android:elevation="4dp">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-        <!-- 이미지 (왼쪽에 배치) -->
+        <!-- 배경 이미지 -->
         <ImageView
             android:id="@+id/itemImage"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="16dp"
-            android:contentDescription="Facility image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background" />
 
-        <!-- 항목 텍스트 -->
+        <!-- 텍스트 겹치기 -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_gravity="bottom"
+            android:background="#80000000"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/itemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="아이템 제목"
-                android:textColor="#333333"
-                android:textSize="16sp" />
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-            <!-- 추가적인 내용 (옵션) -->
             <TextView
                 android:id="@+id/itemDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="설명"
-                android:textColor="#666666"
+                android:textColor="@android:color/white"
                 android:textSize="14sp" />
         </LinearLayout>
 
-    </LinearLayout>
-
+    </FrameLayout>
 </androidx.cardview.widget.CardView>

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "936609664737",
+    "firebase_url": "https://seoul-sports-facility-default-rtdb.firebaseio.com",
     "project_id": "seoul-sports-facility",
     "storage_bucket": "seoul-sports-facility.firebasestorage.app"
   },
@@ -19,6 +20,14 @@
           "android_info": {
             "package_name": "com.example.seouldata",
             "certificate_hash": "7335120bab1b6a2f765d159fa6cf1602ef7e9967"
+          }
+        },
+        {
+          "client_id": "936609664737-horamml9mhbt58347tuo4bd5kv0t51j9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.seouldata",
+            "certificate_hash": "ec62e52d0c3418a40fdf156528a53bd48c614875"
           }
         },
         {

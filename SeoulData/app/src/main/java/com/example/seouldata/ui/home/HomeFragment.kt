@@ -1,5 +1,6 @@
 package com.example.seouldata.ui.home
 
+import com.example.seouldata.ui.decorations.VerticalSpaceItemDecoration
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Geocoder
@@ -17,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.seouldata.R
 import com.example.seouldata.databinding.FragmentHomeBinding
 import com.example.seouldata.dto.FacilitySummaryItem
 import com.example.seouldata.ui.adapter.FacilityAdapter
@@ -80,6 +82,9 @@ class HomeFragment : Fragment() {
 
         // 4. 위치 권한 체크하고 시설 데이터 가져오기
         checkLocationPermissionAndFetch()
+
+        val spacingInPx = resources.getDimensionPixelSize(R.dimen.activity_vertical_margin)
+        binding.recyclerFacilities.addItemDecoration(VerticalSpaceItemDecoration(spacingInPx))
 
         return root
     }
