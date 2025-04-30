@@ -2,6 +2,7 @@ package com.example.seouldata.ui.home
 
 import com.example.seouldata.ui.decorations.VerticalSpaceItemDecoration
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import com.google.android.gms.location.LocationRequest
@@ -11,6 +12,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -92,6 +97,27 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val dropdown: AutoCompleteTextView = binding.categoryDropdown
+        val adapter = ArrayAdapter.createFromResource(
+            requireContext(),       // 현재 Fragment의 context
+            R.array.category,       // string.xml의 <string-array name="category"> 배열
+            android.R.layout.simple_list_item_1  // 각 항목을 표시할 기본 레이아웃
+        )
+        dropdown.setAdapter(adapter)
+
+        // 초기값 설정
+        dropdown.setText("전체", false)
+
+        // 선택 이벤트 리스너 추가
+        dropdown.setOnItemClickListener { parent, view, position, id ->
+            val selected = parent.getItemAtPosition(position).toString()
+            Toast.makeText(requireContext(), "$selected 선택!!", Toast.LENGTH_SHORT).show()
+
+            binding.progressBar.visibility = View.VISIBLE
+            binding.textEmpty.visibility = View.GONE
+        }
+
+        // 현위치 갱신하는 버튼
         binding.iconLocation.setOnClickListener {
             // 위치 권한 있으면 현재 위치 가져오기
             if (RequestPermissionUtil.hasLocationPermission(requireActivity())) {
@@ -116,9 +142,10 @@ class HomeFragment : Fragment() {
     // 위치 업데이트를 시작하는 함수
     private fun startLocationUpdates() {
         // 위치 업데이트 요청(10초마다 갱신, 5초마다 빠른 업데이트)
-        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000) // 10초마다 위치 갱신
-            .setMinUpdateIntervalMillis(5000) // 가장 빠른 업데이트 간격 (5초)
-            .build()
+        val locationRequest =
+            LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000) // 10초마다 위치 갱신
+                .setMinUpdateIntervalMillis(5000) // 가장 빠른 업데이트 간격 (5초)
+                .build()
 
         // 권한 체크 후 위치 업데이트 시작
         if (ContextCompat.checkSelfPermission(
@@ -143,7 +170,6 @@ class HomeFragment : Fragment() {
                 // locations가 비어있지 않으면 처리
                 if (it.locations.isNotEmpty()) {
                     val location = it.locations[0]
-                    Log.d(TAG, "새로운 위치: ${location.latitude}, ${location.longitude}")
                     getAddressFromLocation(location.latitude, location.longitude)
                 }
             }
@@ -173,7 +199,6 @@ class HomeFragment : Fragment() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Log.e(TAG, "❌ 위치 권한이 없습니다. getCurrentLocation() 중단")
             return
         }
 
@@ -182,12 +207,10 @@ class HomeFragment : Fragment() {
             .getLastLocation()
             .addOnSuccessListener { location ->
                 if (location != null) {
-                    Log.d(TAG, "✅ 새로 요청된 현재 위치: ${location.latitude}, ${location.longitude}")
                     val latitude = location.latitude
                     val longitude = location.longitude
                     getAddressFromLocation(latitude, longitude)
                 } else {
-                    Log.w(TAG, "⚠️ lastLocation is null → 새로 요청")
                     requestNewLocation()
                 }
 
@@ -203,7 +226,6 @@ class HomeFragment : Fragment() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Log.e(TAG, "❌ 위치 권한 없음 - requestNewLocation() 종료")
             return
         }
 
@@ -219,14 +241,11 @@ class HomeFragment : Fragment() {
                 if (location != null) {
                     val lat = location.latitude
                     val lon = location.longitude
-                    Log.d(TAG, "✅ 새로 요청된 현재 위치: $lat, $lon")
                     getAddressFromLocation(lat, lon)
                 } else {
-                    Log.e(TAG, "❌ getCurrentLocation 요청 실패 (location == null)")
                 }
             }
             .addOnFailureListener {
-                Log.e(TAG, "❌ 위치 요청 중 오류: ${it.message}")
             }
     }
 
@@ -252,12 +271,13 @@ class HomeFragment : Fragment() {
 
     // Firebase에서 체육시설 정보를 가져오는 함수
     private fun fetchFacilities(city: String, district: String) {
+        binding.progressBar.visibility = View.VISIBLE
+
         val database = FirebaseDatabase.getInstance()
         val testDataRef = database.getReference("DATA")
 
         testDataRef.get().addOnSuccessListener { snapshot ->
             facilityList.clear()
-
 
             snapshot.children.forEach { child ->
                 val areaName = child.child("areanm").getValue(String::class.java) ?: ""
@@ -265,8 +285,8 @@ class HomeFragment : Fragment() {
                 val svcName = child.child("svcnm").getValue(String::class.java) ?: ""
                 val svcStatus = child.child("svcstatnm").getValue(String::class.java) ?: ""
                 val payType = child.child("payatnm").getValue(String::class.java) ?: ""
-                val imgUrl= child.child("imgurl").getValue(String::class.java) ?: ""
-                Log.d(TAG, "areaName: $areaName, district: $district")
+                val imgUrl = child.child("imgurl").getValue(String::class.java) ?: ""
+                val minClassNm = child.child("minclassnm").getValue(String::class.java) ?: ""
 
                 // 필터링 : areaName 또는 placeName 안에 district(마포구 등)가 들어가면 추가
                 if (areaName.contains(district)) {
@@ -276,13 +296,36 @@ class HomeFragment : Fragment() {
                         svcName = svcName,
                         svcStatus = svcStatus,
                         payType = payType,
-                        imgUrl = imgUrl
+                        imgUrl = imgUrl,
+                        minClassNm = minClassNm
                     )
                     facilityList.add(facility)
                 }
             }
+
             facilityAdapter.notifyDataSetChanged()
-            Log.d(TAG, "필터링된 체육시설 수: ${facilityList.size}")
+
+            // 여기부터 Spinner의 현재 선택값으로 추가 필터링!
+            val selected = binding.categoryDropdown.text.toString()
+            val filteredList = if (selected == "전체") {
+                facilityList
+            } else {
+                facilityList.filter { it.minClassNm == selected }
+            }
+
+            // 어댑터에 필터링 결과 적용
+            facilityAdapter.updateItems(filteredList)
+
+            // 리스트가 있으면 RecyclerView를 보이게 설정
+            if (filteredList.isEmpty()) {
+                binding.recyclerFacilities.visibility = View.GONE
+                binding.textEmpty.visibility = View.VISIBLE
+            } else {
+                binding.recyclerFacilities.visibility = View.VISIBLE
+                binding.textEmpty.visibility = View.GONE
+            }
+
+            binding.progressBar.visibility = View.GONE
         }
 
     }

@@ -1,5 +1,6 @@
 package com.example.seouldata.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,9 +46,18 @@ class FacilityAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    fun addItems(newItems: List<FacilitySummaryItem>) {
-        val start = items.size
-        (items as MutableList).addAll(newItems)
-        notifyItemRangeInserted(start, newItems.size)
+    fun updateItems(newItems: List<FacilitySummaryItem>) {
+        if (newItems == null) {
+            return
+        }
+
+        // 불필요한 화면 갱신 피하기 위해서
+        if (items == newItems) {
+            return
+        }
+
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
     }
 }
