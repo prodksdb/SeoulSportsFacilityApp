@@ -30,6 +30,14 @@
           }
         },
         {
+          "client_id": "936609664737-qrge380v64t2rpggrh0sk5bfo4bqre3s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.seouldata",
+            "certificate_hash": "0b72774653974fc515e29aae208234e4f19b15d6"
+          }
+        },
+        {
           "client_id": "936609664737-ik8m9geinqvto0g0kg3k2onv9j7p6bdh.apps.googleusercontent.com",
           "client_type": 3
         }

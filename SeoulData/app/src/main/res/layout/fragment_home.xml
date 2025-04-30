@@ -94,13 +94,14 @@
             android:id="@+id/icon_location"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_location_on" /> <!-- drawable에 아이콘 추가 필요 -->
+            android:src="@drawable/ic_gps_fixed" /> <!-- drawable에 아이콘 추가 필요 -->
 
         <TextView
             android:id="@+id/text_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="현재 위치: 서울 강남구"
+            android:text="현재 위치: 서울특별시 강남구"
+            android:textStyle="bold"
             android:layout_marginStart="8dp"
             android:textSize="16sp" />
     </LinearLayout>
