@@ -2,7 +2,10 @@ package com.example.seouldata.util
 
 import android.content.Context
 import android.util.Log
+import android.view.LayoutInflater
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
+import com.example.seouldata.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
@@ -11,6 +14,14 @@ import java.util.Locale
 
 object UserExpManager {
     private val levelUpThreshold = 50L // 테스트용: 50 경험치로 레벨업
+
+    private val assetNameMap = mapOf(
+        "축구공" to "soccer",
+        "테니스채" to "tennis",
+        "농구공" to "basketball",
+        "수영복" to "swimming"
+    )
+
 
     // 경험치 추가 함수
     fun addExperienceAndCheckLevelUp(expToAdd: Long, context: Context) {
@@ -29,6 +40,8 @@ object UserExpManager {
 
                     exp += expToAdd
                     var rewardGiven = false
+                    var rewardName: String? = null
+
 
                     // 레벨업 체크
                     if (exp >= levelUpThreshold) {
@@ -36,12 +49,19 @@ object UserExpManager {
                         exp -= levelUpThreshold // 남은 경험치는 다음 레벨로 넘김
 
                         // 보상 아이템 지급
-                        when (level) {
-                            2L -> inventory.add("축구공")
-                            3L -> inventory.add("테니스채")
-                            5L -> inventory.add("농구공")
+                        rewardName = when (level) {
+                            2L -> "축구공"
+                            3L -> "테니스채"
+                            4L -> "농구공"
+                            5L -> "수영복"
+                            else -> null //추후 추가
                         }
-                        rewardGiven = true
+                        rewardName?.let {
+                            inventory.add(it)
+                            showLevelUpDialog(context, it)  // 🔥 Context 기반 다이얼로그
+                            rewardGiven = true
+                        }
+
                     }
 
                     // 업데이트할 데이터
@@ -63,6 +83,24 @@ object UserExpManager {
                         }
                 }
             }
+    }
+
+    //레벨업축하다이얼로그
+    private fun showLevelUpDialog(context: Context, assetName: String) {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_levelup_reward, null)
+        val imageView = dialogView.findViewById<ImageView>(R.id.imageReward)
+
+        val drawableName = assetNameMap[assetName] ?: "swimming"
+        val drawableId =
+            context.resources.getIdentifier(drawableName, "drawable", context.packageName)
+        imageView.setImageResource(drawableId)
+
+        AlertDialog.Builder(context)
+            .setTitle("레벨업!")
+            .setMessage("[$assetName]을(를) 획득했어요!")
+            .setView(dialogView)
+            .setPositiveButton("확인", null)
+            .show()
     }
 
     //앱 실행 시 (출석 보상)
