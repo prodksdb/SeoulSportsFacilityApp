@@ -1,17 +1,17 @@
 package com.example.seouldata.ui.notifications
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.seouldata.LoginActivity
-import com.example.seouldata.R
 import com.example.seouldata.databinding.FragmentNotificationsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -70,6 +70,24 @@ class NotificationsFragment : Fragment() {
                     // 에러 처리
                 }
         }
+
+        //애니메이션
+        val scaleX = ObjectAnimator.ofFloat(binding.itemAsset, "scaleX", 1f, 1.1f, 1f)
+        val scaleY = ObjectAnimator.ofFloat(binding.itemAsset, "scaleY", 1f, 1.1f, 1f)
+
+        scaleX.repeatCount = ValueAnimator.INFINITE
+        scaleX.repeatMode = ValueAnimator.REVERSE
+        scaleY.repeatCount = ValueAnimator.INFINITE
+        scaleY.repeatMode = ValueAnimator.REVERSE
+
+        val animatorSet = AnimatorSet().apply {
+            playTogether(scaleX, scaleY)
+            duration = 1000 // 한 사이클(커졌다 작아지기) 걸리는 시간 (ms)
+
+        }
+
+        animatorSet.start()
+
     }
 
     fun logout(context: Context) {
