@@ -64,8 +64,11 @@ dependencies {
     implementation(libs.coroutines.android)
     implementation(libs.lifecycle.runtime.ktx)
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    // 구글 map api 사용
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
+
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))

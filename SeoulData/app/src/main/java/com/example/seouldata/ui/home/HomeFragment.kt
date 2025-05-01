@@ -17,12 +17,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.seouldata.R
 import com.example.seouldata.databinding.FragmentHomeBinding
 import com.example.seouldata.dto.FacilitySummaryItem
 import com.example.seouldata.ui.adapter.FacilityAdapter
+import com.example.seouldata.ui.map.MapFragment
 import com.example.seouldata.util.RequestPermissionUtil
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -94,28 +97,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupCategoryDropdown()
-//        val dropdown: AutoCompleteTextView = binding.categoryDropdown
-//        val adapter = ArrayAdapter.createFromResource(
-//            requireContext(),       // 현재 Fragment의 context
-//            R.array.category,       // string.xml의 <string-array name="category"> 배열
-//            android.R.layout.simple_list_item_1  // 각 항목을 표시할 기본 레이아웃
-//        )
-//        dropdown.setAdapter(adapter)
-//
-//        // 초기값 설정
-//        dropdown.setText("전체", false)
-//
-//        // 선택 이벤트 리스너 추가
-//        dropdown.setOnItemClickListener { parent, view, position, id ->
-//            val selected = parent.getItemAtPosition(position).toString()
-//            Toast.makeText(requireContext(), "$selected 선택!!", Toast.LENGTH_SHORT).show()
-//
-//            binding.progressBar.visibility = View.VISIBLE
-//            binding.textEmpty.visibility = View.GONE
-//        }
 
-
-    // 현위치 갱신하는 버튼
+        // 현위치 갱신하는 버튼
         binding.iconLocation.setOnClickListener {
             // 위치 권한 있으면 현재 위치 가져오기
             if (RequestPermissionUtil.hasLocationPermission(requireActivity())) {
@@ -125,7 +108,19 @@ class HomeFragment : Fragment() {
                 RequestPermissionUtil.requestLocationPermission(requireActivity())
             }
         }
+
+        setFragmentResultListener("map_result") { _, bundle ->
+            val lat = bundle.getDouble("selected_lat")
+            val lng = bundle.getDouble("selected_lng")
+            fetchNearbyFacilities(lat, lng, radiusInMeters = 2000)
+        }
+
+        // floating button 눌렀을 때
+        binding.fabLocation.setOnClickListener{
+            findNavController().navigate(R.id.mapFragment)
+        }
     }
+
 
     private fun setupCategoryDropdown() {
         val categoryList = resources.getStringArray(R.array.category).toList()
@@ -207,7 +202,7 @@ class HomeFragment : Fragment() {
         override fun onLocationResult(locationResult: LocationResult) {
             super.onLocationResult(locationResult)
 
-            locationResult?.let {
+            locationResult.let {
                 // locations가 비어있지 않으면 처리
                 if (it.locations.isNotEmpty()) {
                     val location = it.locations[0]
@@ -367,6 +362,53 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
+    private fun fetchNearbyFacilities(lat: Double, lng: Double, radiusInMeters: Int) {
+        binding.progressBar.visibility = View.VISIBLE
+
+        val database = FirebaseDatabase.getInstance().getReference("DATA")
+        facilityList.clear()
+
+        database.get().addOnSuccessListener { snapshot ->
+            snapshot.children.forEach { child ->
+                val facLat = child.child("lat").getValue(String::class.java)?.toDoubleOrNull() ?: return@forEach
+                val facLng = child.child("lng").getValue(String::class.java)?.toDoubleOrNull() ?: return@forEach
+
+                val distance = calculateDistance(lat, lng, facLat, facLng)
+                if (distance <= radiusInMeters) {
+                    val areaName = child.child("areanm").getValue(String::class.java) ?: ""
+                    val placeName = child.child("placenm").getValue(String::class.java) ?: ""
+                    val svcName = child.child("svcnm").getValue(String::class.java) ?: ""
+                    val svcStatus = child.child("svcstatnm").getValue(String::class.java) ?: ""
+                    val payType = child.child("payatnm").getValue(String::class.java) ?: ""
+                    val imgUrl = child.child("imgurl").getValue(String::class.java) ?: ""
+                    val minClassNm = child.child("minclassnm").getValue(String::class.java) ?: ""
+
+                    facilityList.add(
+                        FacilitySummaryItem(
+                            areaName, placeName, svcName, svcStatus, payType, imgUrl, minClassNm
+                        )
+                    )
+                }
+            }
+
+            facilityAdapter.updateItems(facilityList)
+            filterFacilities()
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val R = 6371000.0
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        return R * c
+    }
+
 
 
     override fun onDestroyView() {
