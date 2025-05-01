@@ -24,6 +24,7 @@ data class FacilitySummaryItem(
     @SerializedName("svcopnenddt") val svcOpenEnd: Long = 0L,         // 서비스개시종료일시 (Long)
     @SerializedName("svcstatnm") val svcStatus: String = "",         // 서비스상태
     @SerializedName("svcurl") val svcUrl: String = "",               // 바로가기URL
+    @SerializedName("telno") val telNo: String="",                   // 시설 전화번호
     @SerializedName("usetgtinfo") val useTargetInfo: String = "",    // 서비스대상
     @SerializedName("v_max") val vMax: String = "",                  // 서비스이용 종료시간
     @SerializedName("v_min") val vMin: String = "",                  // 서비스이용 시작시간
