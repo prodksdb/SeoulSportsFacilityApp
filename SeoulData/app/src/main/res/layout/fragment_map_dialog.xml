@@ -9,6 +9,55 @@
         android:id="@+id/map_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <!-- 카테고리 열기 버튼 (오른쪽 상단) -->
+    <ImageButton
+        android:id="@+id/btn_toggle_categories"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="12dp"
+        android:background="@drawable/bg_round_button"
+        android:backgroundTint="@color/black_primary"
+        android:src="@drawable/ic_menu"
+        app:tint="@android:color/white"
+        android:contentDescription="카테고리 열기" />
+
+    <!-- 오른쪽 숨겨진 수직 카테고리 버튼 패널 -->
+    <ScrollView
+        android:id="@+id/category_scroll"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp"
+        android:visibility="gone"
+        android:translationX="0dp">
+
+    <LinearLayout
+        android:id="@+id/categoryColumn"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button android:id="@+id/btn_all" android:text="전체" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_soccer" android:text="축구장" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_futsal" android:text="풋살장" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_jokgu" android:text="족구장" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_baseball" android:text="야구장" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_tennis" android:text="테니스장" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_basketball" android:text="농구장" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_volleyball" android:text="배구장" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_multi" android:text="다목적경기장" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_gym" android:text="체육관" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_badminton" android:text="배드민턴장" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_pingpong" android:text="탁구장" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_edu" android:text="교육시설" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_swimming" android:text="수영장" style="@style/CategoryButton" />
+        <Button android:id="@+id/btn_golf" android:text="골프장" style="@style/CategoryButton" />
+
+    </LinearLayout>
+</ScrollView>
+
 
     <!-- 닫기 버튼 -->
     <ImageButton
