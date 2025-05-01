@@ -21,11 +21,11 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.seouldata.MapDialogFragment
 import com.example.seouldata.R
 import com.example.seouldata.databinding.FragmentHomeBinding
 import com.example.seouldata.dto.FacilitySummaryItem
 import com.example.seouldata.ui.adapter.FacilityAdapter
-import com.example.seouldata.ui.map.MapFragment
 import com.example.seouldata.util.RequestPermissionUtil
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -99,7 +99,7 @@ class HomeFragment : Fragment() {
         setupCategoryDropdown()
 
         // 현위치 갱신하는 버튼
-        binding.iconLocation.setOnClickListener {
+        binding.btnLocation.setOnClickListener {
             // 위치 권한 있으면 현재 위치 가져오기
             if (RequestPermissionUtil.hasLocationPermission(requireActivity())) {
                 getCurrentLocation()
@@ -110,6 +110,7 @@ class HomeFragment : Fragment() {
         }
 
         setFragmentResultListener("map_result") { _, bundle ->
+            if(!isAdded || _binding==null) return@setFragmentResultListener
             val lat = bundle.getDouble("selected_lat")
             val lng = bundle.getDouble("selected_lng")
             fetchNearbyFacilities(lat, lng, radiusInMeters = 2000)
@@ -117,7 +118,8 @@ class HomeFragment : Fragment() {
 
         // floating button 눌렀을 때
         binding.fabLocation.setOnClickListener{
-            findNavController().navigate(R.id.mapFragment)
+            val dialog = MapDialogFragment()
+            dialog.show(parentFragmentManager,"MapDialog")
         }
     }
 
@@ -313,6 +315,7 @@ class HomeFragment : Fragment() {
         val testDataRef = database.getReference("DATA")
 
         testDataRef.get().addOnSuccessListener { snapshot ->
+            if(!isAdded || _binding == null) return@addOnSuccessListener //뷰가 파괴됐을때 바로 리턴
             facilityList.clear()
 
             snapshot.children.forEach { child ->

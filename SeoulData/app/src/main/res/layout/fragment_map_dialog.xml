@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- 지도 Fragment를 띄울 컨테이너 -->
+    <FrameLayout
+        android:id="@+id/map_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 닫기 버튼 -->
+    <ImageButton
+        android:id="@+id/btn_close_map"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_close"
+        android:background="@drawable/bg_round_button"
+        android:backgroundTint="@color/black_primary"
+        app:tint="@android:color/white"
+        android:layout_gravity="top|start"
+        android:layout_margin="16dp" />
+
+    <ImageButton
+        android:id="@+id/btn_my_location"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_location_search"
+        android:backgroundTint="@color/black_primary"
+        app:tint="@android:color/white"
+        android:background="@drawable/bg_round_button"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp" />
+
+    <LinearLayout
+        android:id="@+id/zoom_controls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp">
+
+        <ImageButton
+            android:id="@+id/btn_zoom_in"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:backgroundTint="@color/black_primary"
+            android:background="@drawable/bg_round_button"
+            android:src="@drawable/ic_zoom_in"
+            app:tint="@android:color/white" />
+
+        <ImageButton
+            android:id="@+id/btn_zoom_out"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="8dp"
+            android:backgroundTint="@color/black_primary"
+            android:background="@drawable/bg_round_button"
+            android:src="@drawable/ic_zoom_out"
+            app:tint="@android:color/white" />
+
+    </LinearLayout>
+
+</FrameLayout>
