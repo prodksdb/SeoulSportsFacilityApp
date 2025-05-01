@@ -2,9 +2,8 @@ package com.example.seouldata
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,23 +11,48 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.seouldata.databinding.FragmentMapDialogBinding
+import com.example.seouldata.dto.FacilityItem
 import com.example.seouldata.util.getColoredMarkerBitmap
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.database.FirebaseDatabase
 
+private const val TAG = "MapDialogFragment"
 class MapDialogFragment : BottomSheetDialogFragment() {
     private var _binding: FragmentMapDialogBinding? = null
     private val binding get() = _binding!!
     private var currentLocationMarker: Marker? = null
+    private var isCategoryVisible = false
+    private val currentMarkers = mutableListOf<Marker>()
+    private val allFacilityList = mutableListOf<FacilityItem>()
+
+    private val categoryColorMap = mapOf(
+        "전체" to R.color.gray_primary,         // 무채색
+        "축구장" to R.color.green_primary,       // 녹색
+        "풋살장" to R.color.light_green,         // 연녹
+        "족구장" to R.color.teal_primary,        // 청록
+        "야구장" to R.color.orange_primary,      // 주황
+        "테니스장" to R.color.purple_primary,    // 보라
+        "농구장" to R.color.red_primary,         // 빨강
+        "배구장" to R.color.blue_primary,        // 파랑
+        "다목적경기장" to R.color.brown_primary, // 갈색
+        "체육관" to R.color.indigo_primary,      // 남보라
+        "배드민턴장" to R.color.yellow_primary,  // 노랑
+        "탁구장" to R.color.cyan_primary,        // 시안
+        "교육시설" to R.color.pink_primary,      // 핑크
+        "수영장" to R.color.blue_light,          // 하늘색
+        "골프장" to R.color.green_dark           // 진초록
+    )
+
 
     private lateinit var googleMap: GoogleMap
 
@@ -54,6 +78,33 @@ class MapDialogFragment : BottomSheetDialogFragment() {
             googleMap = map
             googleMap.uiSettings.isZoomControlsEnabled = false
             moveToCurrentLocation()
+
+            val database = FirebaseDatabase.getInstance().getReference("DATA")
+
+            database.get().addOnSuccessListener { snapshot ->
+                allFacilityList.clear()
+                snapshot.children.forEach { child ->
+                    val x = child.child("x").getValue(String::class.java) ?: return@forEach
+                    val y = child.child("y").getValue(String::class.java) ?: return@forEach
+                    val placenm = child.child("placenm").getValue(String::class.java) ?: ""
+                    val category = child.child("minclassnm").getValue(String::class.java) ?: ""
+
+                    val item = FacilityItem(
+                        latitude = y,
+                        longitude = x,
+                        location = placenm,
+                        minClassNm = category
+                    )
+
+                    Log.d(TAG, "시설 추가됨: $placenm / $x, $y / $category")
+                    allFacilityList.add(item)
+                }
+
+                Log.d(TAG, "총 시설 개수: ${allFacilityList.size}")
+
+                // 마커 한번 전체 출력
+                showMarkersByCategory("전체")
+            }
         }
 
         binding.btnCloseMap.setOnClickListener {
@@ -73,13 +124,131 @@ class MapDialogFragment : BottomSheetDialogFragment() {
             googleMap.animateCamera(CameraUpdateFactory.zoomOut())
         }
 
+        binding.btnToggleCategories.setOnClickListener {
+            val targetView = binding.categoryScroll
+
+            if (isCategoryVisible) {
+                // 숨기기: 오른쪽 바깥으로 나감
+                targetView.animate()
+                    .translationX(targetView.width.toFloat())  // 실제 너비만큼 밀기
+                    .setDuration(300)
+                    .withEndAction {
+                        targetView.visibility = View.GONE
+                        isCategoryVisible = false
+                    }
+                    .start()
+            } else {
+                // 보이기: 오른쪽에서 들어오기
+                targetView.translationX = targetView.width.toFloat()
+                targetView.visibility = View.VISIBLE
+                targetView.animate()
+                    .translationX(0f)
+                    .setDuration(300)
+                    .withEndAction {
+                        isCategoryVisible = true
+                    }
+                    .start()
+            }
+        }
+
+
+        // 종목 누르면 마커로 표시
+        val categoryMap = mapOf(
+            binding.btnAll to "전체",
+            binding.btnSoccer to "축구장",
+            binding.btnFutsal to "풋살장",
+            binding.btnJokgu to "족구장",
+            binding.btnBaseball to "야구장",
+            binding.btnTennis to "테니스장",
+            binding.btnBasketball to "농구장",
+            binding.btnVolleyball to "배구장",
+            binding.btnMulti to "다목적경기장",
+            binding.btnGym to "체육관",
+            binding.btnBadminton to "배드민턴장",
+            binding.btnPingpong to "탁구장",
+            binding.btnEdu to "교육시설",
+            binding.btnSwimming to "수영장",
+            binding.btnGolf to "골프장"
+        )
+
+
+
+        categoryMap.forEach { (button, category) ->
+            button.setOnClickListener {
+                showMarkersByCategory(category)
+            }
+        }
+
+    }
+
+    private fun showMarkersByCategory(category: String) {
+        currentMarkers.forEach{it.remove()}
+        currentMarkers.clear()
+
+        val filtered = if (category == "전체") {
+            allFacilityList
+        } else {
+            allFacilityList.filter { it.minClassNm == category }
+        }
+
+        filtered.forEach { item ->
+            val lat = item.latitude.toDoubleOrNull()
+            val lng = item.longitude.toDoubleOrNull()
+            if (lat != null && lng != null) {
+                // 1. 종목별 색상 찾기
+                val colorRes = categoryColorMap[item.minClassNm] ?: R.color.gray_primary
+
+                // 2. 커스텀 마커 아이콘 생성
+                val markerIcon = getColoredMarkerBitmap(
+                    context = requireContext(),
+                    drawableId = R.drawable.ic_marker_base,
+                    color = ContextCompat.getColor(requireContext(), colorRes),
+                    sizeDp = 40f
+                )
+
+                // 3. 마커 생성
+                val marker = googleMap.addMarker(
+                    MarkerOptions()
+                        .position(LatLng(lat, lng))
+                        .title(item.location)
+                        .icon(markerIcon)  // 여기 추가!
+                )
+                Log.d(TAG, "마커 좌표: lat=$lat, lng=$lng / 종목: ${item.minClassNm}")
+                marker?.let { currentMarkers.add(it) }
+            }
+        }
+
+        // 마커가 있을 경우 카메라 이동
+        if (filtered.isNotEmpty()) {
+            if (filtered.size == 1) {
+                // 마커 1개일 경우: 고정 줌
+                val lat = filtered[0].latitude.toDoubleOrNull()
+                val lng = filtered[0].longitude.toDoubleOrNull()
+                if (lat != null && lng != null) {
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat, lng), 15f))
+                }
+            } else {
+                // 여러 개일 경우: 모두 포함해서 확대
+                val boundsBuilder = LatLngBounds.Builder()
+                filtered.forEach { item ->
+                    val lat = item.latitude.toDoubleOrNull()
+                    val lng = item.longitude.toDoubleOrNull()
+                    if (lat != null && lng != null) {
+                        boundsBuilder.include(LatLng(lat, lng))
+                    }
+                }
+                val bounds = boundsBuilder.build()
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+            }
+        }
     }
 
     override fun onStart() {
         super.onStart()
         val dialog = dialog as? BottomSheetDialog
-        val bottomSheet =
-            dialog?.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+        val bottomSheet = dialog?.findViewById<FrameLayout>(
+                com.google.android.material.R.id.design_bottom_sheet
+            )
         bottomSheet?.let {
             val behavior = BottomSheetBehavior.from(it)
             behavior.isDraggable = false //  드래그 막기

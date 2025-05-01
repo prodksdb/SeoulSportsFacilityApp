@@ -4,4 +4,15 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:background">?attr/colorSurface</item>
     </style>
+
+    <style name="CategoryButton">
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">1dp</item>
+        <item name="android:backgroundTint">@color/black_primary</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>
