@@ -11,7 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
+import android.content.Intent
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.seouldata.FacilityActivity
 import com.example.seouldata.MapDialogFragment
 import com.example.seouldata.R
 import com.example.seouldata.databinding.FragmentHomeBinding
@@ -70,12 +72,19 @@ class HomeFragment : Fragment() {
 
         // 2. Adapter 준비
         facilityAdapter = FacilityAdapter(facilityList) { facilitySummaryItem ->
-            // 클릭 시 행동
             Toast.makeText(
                 requireContext(),
                 "${facilitySummaryItem.placeName} 클릭됨",
                 Toast.LENGTH_SHORT
             ).show()
+
+            // FacilitySummaryItem을 FacilityActivity로 넘기기 전에 로그로 확인
+            Log.d(TAG, "Selected Facility: ${facilitySummaryItem.placeName}, x: ${facilitySummaryItem.x}, y: ${facilitySummaryItem.y}")
+
+            val intent = Intent(context, FacilityActivity::class.java)
+            Log.d(TAG, "Sending FacilityItem with lat: ${facilitySummaryItem.y}, lon: ${facilitySummaryItem.x}")
+            intent.putExtra("facilityItem", facilitySummaryItem)
+            startActivity(intent)
         }
 
         // 3. RecyclerView 연결
@@ -326,6 +335,12 @@ class HomeFragment : Fragment() {
                 val payType = child.child("payatnm").getValue(String::class.java) ?: ""
                 val imgUrl = child.child("imgurl").getValue(String::class.java) ?: ""
                 val minClassNm = child.child("minclassnm").getValue(String::class.java) ?: ""
+                val telNo = child.child("telno").getValue(String::class.java) ?: ""
+                val vMin = child.child("v_min").getValue(String::class.java) ?: ""
+                val vMax = child.child("v_max").getValue(String::class.java) ?: ""
+                val x = child.child("x").getValue(String::class.java) ?: ""
+                val y = child.child("y").getValue(String::class.java) ?: ""
+                val dtlcont = child.child("dtlcont").getValue(String::class.java) ?: ""
 
                 // 필터링 : areaName 또는 placeName 안에 district(마포구 등)가 들어가면 추가
                 if (areaName.contains(district)) {
@@ -336,7 +351,13 @@ class HomeFragment : Fragment() {
                         svcStatus = svcStatus,
                         payType = payType,
                         imgUrl = imgUrl,
-                        minClassNm = minClassNm
+                        minClassNm = minClassNm,
+                        telNo = telNo,
+                        vMin = vMin,
+                        vMax = vMax,
+                        x = x,
+                        y = y,
+                        detailContent = dtlcont
                     )
                     facilityList.add(facility)
                 }
