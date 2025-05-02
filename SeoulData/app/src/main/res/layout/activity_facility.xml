@@ -681,7 +681,7 @@
             </FrameLayout>
 
             <!-- 미니맵 영역 -->
-            <com.example.seouldata.util.TouchWrapper
+            <com.seouldata.sport.util.TouchWrapper
                 android:id="@+id/mapTouchWrapper"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
@@ -693,7 +693,7 @@
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-            </com.example.seouldata.util.TouchWrapper>
+            </com.seouldata.sport.util.TouchWrapper>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
