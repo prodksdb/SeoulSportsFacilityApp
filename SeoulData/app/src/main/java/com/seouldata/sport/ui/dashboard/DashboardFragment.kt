@@ -1,18 +1,20 @@
-package com.example.seouldata.ui.dashboard
+package com.seouldata.sport.ui.dashboard
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.seouldata.databinding.FragmentDashboardBinding
-import com.example.seouldata.ui.adapter.ReservationAdapter
+import com.seouldata.sport.ui.dashboard.DashboardViewModel
+import com.seouldata.sport.databinding.FragmentDashboardBinding
+import com.seouldata.sport.dto.Reservation
+
+
+import com.seouldata.sport.ui.adapter.ReservationAdapter
 
 class DashboardFragment : Fragment() {
 
@@ -46,7 +48,7 @@ class DashboardFragment : Fragment() {
         }
 
         // ViewModel의 LiveData 관찰 연
-        vm.reservations.observe(viewLifecycleOwner) { list ->
+        vm.reservations.observe(viewLifecycleOwner) { list: List<Reservation> ->
             adapter.submitList(list)
            // 빈 목록일 때 안내 텍스트 보이기 등 처리 가능
 

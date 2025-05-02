@@ -1,4 +1,4 @@
-package com.example.seouldata.ui.adapter
+package com.seouldata.sport.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,9 +6,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.seouldata.R
-import com.example.seouldata.databinding.ItemReservationSimpleBinding
-import com.example.seouldata.dto.Reservation
+import com.seouldata.sport.R
+import com.seouldata.sport.databinding.ItemReservationSimpleBinding
+import com.seouldata.sport.dto.Reservation
+
 
 class ReservationAdapter :
     ListAdapter<Reservation, ReservationAdapter.VH>(DIFF_CALLBACK) {

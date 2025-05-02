@@ -3,9 +3,10 @@ package com.seouldata.sport.ui.dashboard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.seouldata.dto.Reservation
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.seouldata.sport.dto.Reservation
 
 class DashboardViewModel : ViewModel() {
     private val _reservations = MutableLiveData<List<Reservation>>()

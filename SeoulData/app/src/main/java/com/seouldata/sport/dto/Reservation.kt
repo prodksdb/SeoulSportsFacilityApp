@@ -1,4 +1,4 @@
-package com.example.seouldata.dto
+package com.seouldata.sport.dto
 data class Reservation(
     val placeName: String = "",
     val dateTime: String = "",    // "2025년 5월 10일 (토) 11:00 ~ 13:00"

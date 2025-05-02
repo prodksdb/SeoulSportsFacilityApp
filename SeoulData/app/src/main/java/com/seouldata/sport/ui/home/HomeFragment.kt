@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -23,7 +22,6 @@ import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.seouldata.sport.FacilityActivity
 import com.seouldata.sport.MapDialogFragment
-import com.seouldata.sport.R
 import com.seouldata.sport.data.db.AppDatabaseProvider
 import com.seouldata.sport.data.mapper.toDto
 import com.seouldata.sport.databinding.FragmentHomeBinding
@@ -35,6 +33,7 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 import kotlin.math.pow
 import kotlin.math.sqrt
+import com.seouldata.sport.R
 
 private const val TAG = "HomeFragment"
 
