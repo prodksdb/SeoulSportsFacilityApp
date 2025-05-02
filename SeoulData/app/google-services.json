@@ -1,66 +1,42 @@
 {
   "project_info": {
-    "project_number": "936609664737",
-    "firebase_url": "https://seoul-sports-facility-default-rtdb.firebaseio.com",
-    "project_id": "seoul-sports-facility",
-    "storage_bucket": "seoul-sports-facility.firebasestorage.app"
+    "project_number": "511323861240",
+    "firebase_url": "https://seouldata-fac29-default-rtdb.firebaseio.com",
+    "project_id": "seouldata-fac29",
+    "storage_bucket": "seouldata-fac29.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:936609664737:android:e6d7fabf0ee5d305af71a0",
+        "mobilesdk_app_id": "1:511323861240:android:5617c8492b3f6498708b0d",
         "android_client_info": {
-          "package_name": "com.example.seouldata"
+          "package_name": "com.seouldata.sport"
         }
       },
       "oauth_client": [
         {
-          "client_id": "936609664737-c0kt295135p7t66cd37aefahofvti40o.apps.googleusercontent.com",
+          "client_id": "511323861240-2j0tffb96rvqlp0khuchcbei6c23bud6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.seouldata",
-            "certificate_hash": "7335120bab1b6a2f765d159fa6cf1602ef7e9967"
-          }
-        },
-        {
-          "client_id": "936609664737-horamml9mhbt58347tuo4bd5kv0t51j9.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.seouldata",
+            "package_name": "com.seouldata.sport",
             "certificate_hash": "ec62e52d0c3418a40fdf156528a53bd48c614875"
           }
         },
         {
-          "client_id": "936609664737-kkvgg5chpra3ehvkbt0q8peqmkgdstmr.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.seouldata",
-            "certificate_hash": "1b9e9fa0e53e76e21d3e3ace701c6a2bf10bcff2"
-          }
-        },
-        {
-          "client_id": "936609664737-qrge380v64t2rpggrh0sk5bfo4bqre3s.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.seouldata",
-            "certificate_hash": "0b72774653974fc515e29aae208234e4f19b15d6"
-          }
-        },
-        {
-          "client_id": "936609664737-ik8m9geinqvto0g0kg3k2onv9j7p6bdh.apps.googleusercontent.com",
+          "client_id": "511323861240-dthusp2kg0in4qmodql2rm8jbqmal3p8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCjt3yPYyXGts741Iy6rfTsiTd3z8ZM3bM"
+          "current_key": "AIzaSyAzZ3oioWoCqMIeFxudVR9m2jrzFGZHPic"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "936609664737-ik8m9geinqvto0g0kg3k2onv9j7p6bdh.apps.googleusercontent.com",
+              "client_id": "511323861240-dthusp2kg0in4qmodql2rm8jbqmal3p8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
