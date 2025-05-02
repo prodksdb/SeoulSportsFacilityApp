@@ -38,6 +38,7 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.firebase.database.FirebaseDatabase
 import java.util.Locale
 
+
 private const val TAG = "HomeFragment"
 
 // Home 화면 UI 담당
@@ -320,6 +321,7 @@ class HomeFragment : Fragment() {
     private fun fetchFacilities(city: String, district: String) {
         binding.progressBar.visibility = View.VISIBLE
 
+        Log.d("TEST","fetchFacilities")
         val database = FirebaseDatabase.getInstance()
         val testDataRef = database.getReference("DATA")
 
@@ -393,7 +395,8 @@ class HomeFragment : Fragment() {
         val database = FirebaseDatabase.getInstance().getReference("DATA")
         facilityList.clear()
 
-        database.get().addOnSuccessListener { snapshot ->
+        database.get()
+            .addOnSuccessListener { snapshot ->
             snapshot.children.forEach { child ->
                 val facLat = child.child("lat").getValue(String::class.java)?.toDoubleOrNull() ?: return@forEach
                 val facLng = child.child("lng").getValue(String::class.java)?.toDoubleOrNull() ?: return@forEach
