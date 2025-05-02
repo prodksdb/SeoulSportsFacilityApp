@@ -29,4 +29,9 @@ interface FacilityDao {
     // 5. 전체 삭제
     @Query("DELETE FROM facility")
     suspend fun deleteAll()
+
+    // 6. 구 이름으로 필터링
+    @Query("SELECT * FROM facility WHERE areaName LIKE '%' || :district || '%'")
+    suspend fun getByDistrict(district: String): List<FacilityEntity>
+
 }
