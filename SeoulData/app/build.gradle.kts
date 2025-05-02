@@ -1,17 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    kotlin("kapt")
     id("kotlin-parcelize")
-
     id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.example.seouldata"
+    namespace = "com.seouldata.sport"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.seouldata"
+        applicationId = "com.seouldata.sport"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -38,6 +38,9 @@ android {
     }
     buildFeatures {
         viewBinding = true
+    }
+    kapt{
+        correctErrorTypes = true
     }
 }
 
@@ -75,6 +78,15 @@ dependencies {
     implementation("com.google.firebase:firebase-database")
 
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // Room DB
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+
+    // Room 내부 kapt 오류 방지용
+    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0")
+
 
 
 }
