@@ -1,5 +1,6 @@
 package com.seouldata.sport.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +46,7 @@ class FacilityAdapter(
 
     override fun getItemCount(): Int = items.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateItems(newItems: List<FacilitySummaryItem>) {
         if (newItems == null) {
             return
