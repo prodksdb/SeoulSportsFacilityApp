@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">SeoulData</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_home">시설 찾기</string>
+    <string name="title_dashboard">내 활동</string>
+    <string name="title_notifications">프로필</string>
     <string name="seoul_api_key">764f75724c72686636314f7a434544</string>
     <string name="google_map_api_key">AIzaSyC94qTOuYM09ER7_BaTelmqcHZ9RqC8jVc</string>
     <string-array name="category">

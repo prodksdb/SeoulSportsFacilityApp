@@ -1,5 +1,6 @@
 package com.example.seouldata
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.location.Geocoder
@@ -23,6 +24,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import okio.IOException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -34,6 +38,12 @@ class FacilityActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityFacilityBinding
     private var facilityItem: FacilitySummaryItem? = null
     private lateinit var map: GoogleMap
+
+        private var selectedDate: LocalDate? = null
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val koreanFormatter =
+        DateTimeFormatter.ofPattern("yyyy년 M월 d일 (E)", Locale.KOREAN)
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,10 +69,43 @@ class FacilityActivity : AppCompatActivity(), OnMapReadyCallback {
         // 날짜 선택 설정
         setupDateChips()
 
-        // 예약 버튼 클릭 처리
+        // 예약 버튼 클릭 처리 ->예약 목록에 추가
         binding.btnReserve.setOnClickListener {
-            Toast.makeText(this, "예약되었습니다.", Toast.LENGTH_SHORT).show()
+
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@setOnClickListener
+
+
+
+// 버튼 클릭 등에서
+            val displayDate = selectedDate?.format(koreanFormatter)
+
+            val dateTimeCombined = "$displayDate 11:00~13:00"
+            // 저장할 예약 데이터
+            val reservationData = mapOf(
+                "placeName" to facilityItem?.placeName,
+                "dateTime"  to dateTimeCombined,
+                "status"    to "예약 대기"
+            )
+
+            // users 컬렉션 > uid 문서의 'reservations' 배열에 추가
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(userId)
+                .update("reservations", FieldValue.arrayUnion(reservationData))
+                .addOnSuccessListener {
+                    Toast.makeText(this, "예약 목록에 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                    // SharedPreferences에도 간단 플래그 저장(옵션)
+                    getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                        .edit()
+                        .putBoolean("hasReservation", true)
+                        .apply()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "예약 저장 실패", Toast.LENGTH_SHORT).show()
+                }
+
         }
+
 
         // 뒤로 가기
         binding.btnBack.setOnClickListener {
@@ -161,6 +204,7 @@ class FacilityActivity : AppCompatActivity(), OnMapReadyCallback {
             val chip = Chip(this)
             chip.text = date.format(formatter)  // 날짜 포맷
             chip.isCheckable = true
+            chip.tag= date //선택한 날짜 저장
 
             // 텍스트를 Bold(진하게)로 설정
             chip.setTypeface(null, Typeface.BOLD)
@@ -179,10 +223,12 @@ class FacilityActivity : AppCompatActivity(), OnMapReadyCallback {
                     // 날짜가 선택되었을 때
                     chip.setChipBackgroundColorResource(R.color.red_primary)  // 배경색 변경
                     chip.setTextColor(ContextCompat.getColor(this, R.color.black_primary))  // 텍스트 색상 변경
+                    selectedDate = date
                 } else {
                     // 날짜 선택 취소 시
                     chip.setChipBackgroundColorResource(R.color.black_primary)  // 기본 배경색으로 리셋
                     chip.setTextColor(ContextCompat.getColor(this, R.color.white))  // 기본 텍스트 색상으로 리셋
+                    selectedDate = null
                 }
                 showTimeSelection(date)  // 날짜 선택 시 시간 선택 UI 활성화
             }
