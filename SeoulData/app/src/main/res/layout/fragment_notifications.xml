@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:text="저장"
                 android:textColor="#ffffff"
-                app:backgroundTint="#A3C3C0"
+                app:backgroundTint="@color/green_primary"
                 app:iconPadding="8dp"
                 app:iconTint="#ffffff" />
         </LinearLayout>
