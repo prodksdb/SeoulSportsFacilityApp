@@ -23,11 +23,35 @@
           }
         },
         {
+          "client_id": "511323861240-621ekfed411g1i1i6g651le38nesrcp8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seouldata.sport",
+            "certificate_hash": "1b9e9fa0e53e76e21d3e3ace701c6a2bf10bcff2"
+          }
+        },
+        {
+          "client_id": "511323861240-c5tbdfvo0jh3uvvlh8ol4duqj4h1bdtl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seouldata.sport",
+            "certificate_hash": "0b72774653974fc515e29aae208234e4f19b15d6"
+          }
+        },
+        {
           "client_id": "511323861240-dbtonr1r881a94uan11grtj2qd9e4c89.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.seouldata.sport",
             "certificate_hash": "7335120bab1b6a2f765d159fa6cf1602ef7e9967"
+          }
+        },
+        {
+          "client_id": "511323861240-grprejbcfpe7s383tlh88eoj6tjifums.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seouldata.sport",
+            "certificate_hash": "47233f78732e742f41028bac203ccba02199bd7e"
           }
         },
         {
