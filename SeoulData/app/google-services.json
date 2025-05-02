@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "511323861240-dbtonr1r881a94uan11grtj2qd9e4c89.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seouldata.sport",
+            "certificate_hash": "7335120bab1b6a2f765d159fa6cf1602ef7e9967"
+          }
+        },
+        {
           "client_id": "511323861240-dthusp2kg0in4qmodql2rm8jbqmal3p8.apps.googleusercontent.com",
           "client_type": 3
         }

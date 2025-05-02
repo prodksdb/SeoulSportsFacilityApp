@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvPlaceName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="영등포 공원 > 풋살 경기장"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/tvDateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="2025년 5월 1일 (목) 15:00 ~ 17:00"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#666666"/>
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="예약 대기"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/gray_primary"/>
+
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

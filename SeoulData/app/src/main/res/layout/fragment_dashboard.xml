@@ -7,7 +7,7 @@
     <LinearLayout
         android:id="@+id/card_summary_group"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +18,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_review_board"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="140dp"
             android:layout_weight="1"
             android:layout_margin="8dp"
             app:cardCornerRadius="16dp"
@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@color/red_primary"
+                android:background="#D05862"
                 android:padding="16dp"
                 android:gravity="center_vertical">
 
@@ -53,7 +53,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="이용 게시판"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/white" />
                 </LinearLayout>
@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@color/black_primary"
+                android:background="#4D4D4D"
                 android:padding="16dp"
                 android:gravity="center_vertical">
 
@@ -107,8 +107,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Q &amp; A"
-                        android:textSize="22sp"
+                        android:text="Q&amp;A"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/white" />
                 </LinearLayout>
@@ -116,7 +116,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="자주 묻는 질문을\n여기서 확인해보세요!"
+                    android:text="자주 묻는 질문을\n여기서 확인해보세요"
                     android:textSize="15dp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
@@ -167,207 +167,221 @@
     </com.google.android.material.card.MaterialCardView>
 
 
-    <!-- 예약 목록 -->
-    <ScrollView
-        android:id="@+id/scroll_reservation_list"
+    <!-- 리사이클러뷰로 교체 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_reservation_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp"
+        tools:listitem="@layout/item_reservation_simple"
+        tools:itemCount="4"
+        app:layout_constraintTop_toBottomOf="@id/tv_reservationInfo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_reservationInfo">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <!-- 예약 아이템 1 -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/tv_reserve_title_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="보라매 축구장"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_reserve_time_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="2025년 5월 13일 (화) 19:00 ~ 21:00"
-                        android:textColor="#666666"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_reserve_status_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="예약 대기"
-                        android:textColor="@color/gray_primary"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- 예약 아이템 2 -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/tv_reserve_title_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="서울 체육관"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_reserve_time_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="2025년 5월 10일 (토) 13:00 ~ 16:00"
-                        android:textColor="#666666"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_reserve_status_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="예약 확정"
-                        android:textColor="@color/red_primary"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
-            <!-- 예약 아이템 3 -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp">
+<!--    &lt;!&ndash; 예약 목록 &ndash;&gt;-->
+<!--    <ScrollView-->
+<!--        android:id="@+id/scroll_reservation_list"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:fillViewport="true"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/tv_reservationInfo">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:clipChildren="false"-->
+<!--            android:clipToPadding="false"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="16dp">-->
 
-                    <TextView
-                        android:id="@+id/tv_reserve_title_3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="잠실 종합 운동장 > 풋살 경기장"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+<!--            &lt;!&ndash; 예약 아이템 1 &ndash;&gt;-->
+<!--            <com.google.android.material.card.MaterialCardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="12dp"-->
+<!--                app:cardCornerRadius="12dp"-->
+<!--                app:cardElevation="6dp">-->
 
-                    <TextView
-                        android:id="@+id/tv_reserve_time_3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="2025년 5월 2일 (금) 18:00 ~ 20:00"
-                        android:textColor="#666666"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="16dp">-->
 
-                    <TextView
-                        android:id="@+id/tv_reserve_status_3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="이용 완료"
-                        android:textColor="@color/green_primary"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_reserve_title_1"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="보라매 축구장"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="20sp"-->
+<!--                        android:textStyle="bold" />-->
 
-            </com.google.android.material.card.MaterialCardView>
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_reserve_time_1"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="4dp"-->
+<!--                        android:text="2025년 5월 13일 (화) 19:00 ~ 21:00"-->
+<!--                        android:textColor="#666666"-->
+<!--                        android:textSize="14sp"-->
+<!--                        android:textStyle="bold" />-->
 
-            <!-- 예약 아이템 4 -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp">
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_reserve_status_1"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="4dp"-->
+<!--                        android:text="예약 대기"-->
+<!--                        android:textColor="@color/gray_primary"-->
+<!--                        android:textSize="14sp"-->
+<!--                        android:textStyle="bold" />-->
+<!--                </LinearLayout>-->
+<!--            </com.google.android.material.card.MaterialCardView>-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+<!--            &lt;!&ndash; 예약 아이템 2 &ndash;&gt;-->
+<!--            <com.google.android.material.card.MaterialCardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="12dp"-->
+<!--                app:cardCornerRadius="12dp"-->
+<!--                app:cardElevation="6dp">-->
 
-                    <TextView
-                        android:id="@+id/tv_reserve_title_4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="영등포 공원 > 풋살 경기장"
-                        android:textColor="#000000"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="16dp">-->
 
-                    <TextView
-                        android:id="@+id/tv_reserve_time_4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="2025년 5월 1일 (목) 15:00 ~ 17:00"
-                        android:textColor="#666666"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_reserve_title_2"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="서울 체육관"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="20sp"-->
+<!--                        android:textStyle="bold" />-->
 
-                    <TextView
-                        android:id="@+id/tv_reserve_status_4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="이용 완료"
-                        android:textColor="@color/green_primary"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-    </ScrollView>
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_reserve_time_2"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="4dp"-->
+<!--                        android:text="2025년 5월 10일 (토) 13:00 ~ 16:00"-->
+<!--                        android:textColor="#666666"-->
+<!--                        android:textSize="14sp"-->
+<!--                        android:textStyle="bold" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_reserve_status_2"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="4dp"-->
+<!--                        android:text="예약 확정"-->
+<!--                        android:textColor="@color/red_primary"-->
+<!--                        android:textSize="14sp"-->
+<!--                        android:textStyle="bold" />-->
+<!--                </LinearLayout>-->
+<!--            </com.google.android.material.card.MaterialCardView>-->
+
+
+<!--            &lt;!&ndash; 예약 아이템 3 &ndash;&gt;-->
+<!--            <com.google.android.material.card.MaterialCardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="12dp"-->
+<!--                app:cardCornerRadius="12dp"-->
+<!--                app:cardElevation="6dp">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="16dp">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_reserve_title_3"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="잠실 종합 운동장 > 풋살 경기장"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="20sp"-->
+<!--                        android:textStyle="bold" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_reserve_time_3"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="4dp"-->
+<!--                        android:text="2025년 5월 2일 (금) 18:00 ~ 20:00"-->
+<!--                        android:textColor="#666666"-->
+<!--                        android:textSize="14sp"-->
+<!--                        android:textStyle="bold" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_reserve_status_3"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="4dp"-->
+<!--                        android:text="이용 완료"-->
+<!--                        android:textColor="@color/green_primary"-->
+<!--                        android:textSize="14sp"-->
+<!--                        android:textStyle="bold" />-->
+<!--                </LinearLayout>-->
+
+<!--            </com.google.android.material.card.MaterialCardView>-->
+
+<!--            &lt;!&ndash; 예약 아이템 4 &ndash;&gt;-->
+<!--            <com.google.android.material.card.MaterialCardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="12dp"-->
+<!--                app:cardCornerRadius="12dp"-->
+<!--                app:cardElevation="6dp">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="16dp">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_reserve_title_4"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="영등포 공원 > 풋살 경기장"-->
+<!--                        android:textColor="#000000"-->
+<!--                        android:textSize="20sp"-->
+<!--                        android:textStyle="bold" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_reserve_time_4"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="4dp"-->
+<!--                        android:text="2025년 5월 1일 (목) 15:00 ~ 17:00"-->
+<!--                        android:textColor="#666666"-->
+<!--                        android:textSize="14sp"-->
+<!--                        android:textStyle="bold" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_reserve_status_4"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="4dp"-->
+<!--                        android:text="이용 완료"-->
+<!--                        android:textColor="@color/green_primary"-->
+<!--                        android:textSize="14sp"-->
+<!--                        android:textStyle="bold" />-->
+<!--                </LinearLayout>-->
+<!--            </com.google.android.material.card.MaterialCardView>-->
+<!--        </LinearLayout>-->
+<!--    </ScrollView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
