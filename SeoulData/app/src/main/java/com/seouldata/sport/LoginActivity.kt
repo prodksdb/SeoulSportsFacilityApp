@@ -2,6 +2,7 @@ package com.seouldata.sport
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +13,6 @@ import com.seouldata.sport.util.UserExpManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.SignInButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.DocumentSnapshot
@@ -47,11 +47,12 @@ class LoginActivity : AppCompatActivity() {
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        findViewById<SignInButton>(R.id.btnGoogleLogin).setOnClickListener {
+        // 변경된 부분: 커스텀 LinearLayout 버튼으로 변경
+        val googleLoginButton = findViewById<LinearLayout>(R.id.btn_google_login)
+        googleLoginButton.setOnClickListener {
             signIn()
         }
     }
-
 
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
@@ -67,7 +68,6 @@ class LoginActivity : AppCompatActivity() {
                 val account = task.result
                 firebaseAuthWithGoogle(account.idToken!!)
             } else {
-                // 실패 처리
                 Toast.makeText(this, "구글 로그인 연동 실패", Toast.LENGTH_SHORT).show()
             }
         }
@@ -82,8 +82,7 @@ class LoginActivity : AppCompatActivity() {
                     val userId = user?.uid ?: return@addOnCompleteListener
                     val userName = user.displayName ?: "이름없는유저"
 
-                    val docRef =
-                        FirebaseFirestore.getInstance().collection("users").document(userId)
+                    val docRef = FirebaseFirestore.getInstance().collection("users").document(userId)
                     docRef.get()
                         .addOnSuccessListener { document ->
                             if (document != null && document.exists()) {
