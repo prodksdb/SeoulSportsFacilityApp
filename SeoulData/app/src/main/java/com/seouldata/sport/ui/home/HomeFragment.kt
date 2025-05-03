@@ -47,6 +47,7 @@ class HomeFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var currentDistrict: String = ""
     private var currentCategory: String = "전체"
+    private var currentCity: String = ""
     private var currentFilteredList: List<FacilitySummaryItem> = emptyList()
     private var firstLoadDone = false
 
@@ -153,6 +154,13 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (firstLoadDone) {
+            binding.textLocation.text = "현재 위치: ${currentCity} ${currentDistrict}"
+            setupCategoryDropdown(resources.getStringArray(R.array.category).toList())
+            filterFacilities()  // 리스트만 다시 갱신
+            return
+        }
+
         // 현재 위치 불러오는 함수
         binding.btnLocation.setOnClickListener {
             if (RequestPermissionUtil.hasLocationPermission(requireActivity())) {
@@ -161,14 +169,6 @@ class HomeFragment : Fragment() {
                 RequestPermissionUtil.requestLocationPermission(requireActivity())
             }
         }
-
-//        // Dialog -> Fragment
-//        setFragmentResultListener("map_result") { _, bundle ->
-//            if (!isAdded || _binding == null) return@setFragmentResultListener
-//            val lat = bundle.getDouble("selected_lat")
-//            val lng = bundle.getDouble("selected_lng")
-//            fetchNearbyFacilities(lat, lng, radiusInMeters = 2000)
-//        }
 
         binding.fabLocation.setOnClickListener {
             val dialog = MapDialogFragment()
@@ -229,10 +229,18 @@ class HomeFragment : Fragment() {
     private fun getAddressFromLocation(lat: Double, lon: Double) {
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
         val addresses = geocoder.getFromLocation(lat, lon, 1)
-        if (!addresses.isNullOrEmpty()) {  // 주소 결과가 null도 아니고, 빈 리스트도 아닐 때
+        if (!addresses.isNullOrEmpty()) {
             val address = addresses[0]
             val city = address.adminArea ?: ""
             val district = address.subLocality ?: address.subAdminArea ?: ""
+
+            // 기존 district와 같으면 재로딩하지 않음
+            if (district == currentDistrict && firstLoadDone) {
+                Log.d(TAG, "동일 구(district) 감지 - 재로딩 생략")
+                return
+            }
+
+            currentCity = city
             currentDistrict = district
             binding.textLocation.text = "현재 위치: $city $district"
 
@@ -271,9 +279,9 @@ class HomeFragment : Fragment() {
 
         // 코루틴 시작: UI를 멈추지 않고 DB에서 데이터를 비동기로 읽기 위해 코루틴을 사용
         lifecycleScope.launch {
-            binding.progressBar.visibility = View.VISIBLE
-            binding.textEmpty.visibility = View.GONE
-            binding.recyclerFacilities.visibility = View.GONE
+//            binding.progressBar.visibility = View.VISIBLE
+//            binding.textEmpty.visibility = View.GONE
+//            binding.recyclerFacilities.visibility = View.GONE
             facilityList.clear()
 
             val roomData = dao.getByDistrict(district)
@@ -291,7 +299,6 @@ class HomeFragment : Fragment() {
     // 현재 선택된 카테고리 기준으로 리스트 필터링 및 업데이트
     private fun filterFacilities() {
         lifecycleScope.launch {
-            // ⛔ 아직 데이터 로딩 안 끝났으면 로딩 UI만
             if (!firstLoadDone) {
                 binding.progressBar.visibility = View.VISIBLE
                 binding.recyclerFacilities.visibility = View.GONE
@@ -299,71 +306,35 @@ class HomeFragment : Fragment() {
                 return@launch
             }
 
-            // ✅ 필터링 시작
+            Log.d(TAG, "현재 선택된 카테고리: $currentCategory")
+            facilityList.forEach { Log.d(TAG, "시설: ${it.placeName}, 카테고리: ${it.minClassNm}") }
+
             val filteredList = if (currentCategory == "전체") {
                 facilityList
             } else {
                 facilityList.filter { it.minClassNm.trim().contains(currentCategory) }
             }
 
+            Log.d(TAG, "필터링된 개수: ${filteredList.size}")
+            filteredList.forEach { Log.d(TAG, "필터링 통과: ${it.placeName}, ${it.minClassNm}") }
+
             val changed = currentFilteredList != filteredList
             currentFilteredList = filteredList
             facilityAdapter.updateItems(filteredList)
 
-            // 👇 UI 표시 로직
-            binding.progressBar.visibility = View.GONE
-
             if (filteredList.isEmpty()) {
-                binding.recyclerFacilities.visibility = View.GONE
-                binding.textEmpty.visibility = View.VISIBLE
-
-                // ✅ 로딩 완료 후 && 바뀐 리스트일 때만 Toast
                 if (changed && facilityList.isNotEmpty()) {
                     Toast.makeText(requireContext(), "해당 시설이 없습니다.", Toast.LENGTH_SHORT).show()
                 }
+                binding.recyclerFacilities.visibility = View.GONE
+                binding.textEmpty.visibility = View.VISIBLE
             } else {
-                binding.textEmpty.visibility = View.GONE
                 binding.recyclerFacilities.visibility = View.VISIBLE
+                binding.textEmpty.visibility = View.GONE
             }
         }
     }
 
-
-
-
-//    private fun fetchNearbyFacilities(lat: Double, lng: Double, radiusInMeters: Int) {
-//        val dao = AppDatabaseProvider.getDatabase(requireContext()).facilityDao()
-//        lifecycleScope.launch {
-//            binding.progressBar.visibility = View.VISIBLE
-//            binding.textEmpty.visibility = View.GONE
-//            binding.recyclerFacilities.visibility = View.GONE
-//            facilityList.clear()
-//
-//            val roomData = dao.getAll()
-//            facilityList.addAll(roomData.filter {
-//                val facLat = it.y.toDoubleOrNull() ?: return@filter false
-//                val facLng = it.x.toDoubleOrNull() ?: return@filter false
-//                calculateDistance(lat, lng, facLat, facLng) <= radiusInMeters
-//            }.map { it.toDto() })
-//
-//            val newCategories = listOf("전체") + facilityList.map { it.minClassNm }.distinct().sorted()
-//            setupCategoryDropdown(newCategories)
-//
-//            firstLoadDone = true
-//            filterFacilities()
-//        }
-//    }
-
-//    private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-//        val R = 6371000.0
-//        val dLat = Math.toRadians(lat2 - lat1)
-//        val dLon = Math.toRadians(lon2 - lon1)
-//        val a = Math.sin(dLat / 2).pow(2.0) +
-//                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-//                Math.sin(dLon / 2).pow(2.0)
-//        val c = 2 * Math.atan2(sqrt(a), sqrt(1 - a))
-//        return R * c
-//    }
 
     override fun onStart() {
         super.onStart()
