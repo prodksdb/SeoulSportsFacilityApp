@@ -1,5 +1,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -169,20 +170,39 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogout"
         style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="240dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+
+        android:layout_marginStart="44dp"
         android:backgroundTint="@color/white"
         android:text="로그아웃"
-        android:textColor="#626262"
-        android:textSize="16sp"
+        app:iconSize="16sp"
+        android:textColor="#B8B8B8"
+        android:textSize="12sp"
         app:icon="@drawable/ic_logout"
         app:iconGravity="textStart"
         app:iconPadding="8dp"
-        app:iconTint="#626262"
+        app:iconTint="#B8B8B8"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDeleteAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="44dp"
+        android:backgroundTint="@color/white"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:padding="0dp"
+        android:text="회원 탈퇴"
+        android:textSize="12sp"
+        app:iconSize="16sp"
+        android:textColor="#B8B8B8"
+        app:iconTint="#B8B8B8"
+        app:icon="@drawable/ic_person_remove"
+        app:layout_constraintBottom_toBottomOf="@+id/btnLogout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnLogout" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

@@ -748,13 +748,16 @@
         <!-- 예약 버튼 -->
         <LinearLayout
             android:layout_width="match_parent"
+            android:id="@+id/btnReserve"
             android:layout_height="wrap_content"
-            android:background="@color/red_primary"
+            android:background="@drawable/btn_bg_selector"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
             android:padding="12dp">
 
             <TextView
-                android:id="@+id/btnReserve"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="예약하기"

@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
+import com.google.android.play.integrity.internal.f
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -112,6 +113,10 @@ class FacilityActivity : AppCompatActivity(), OnMapReadyCallback {
             finish()
         }
 
+        binding.mapTouchWrapper.onTouch = {
+            binding.scrollView.requestDisallowInterceptTouchEvent(true)
+        }
+
         // 맵 준비
         val mapFragment = SupportMapFragment.newInstance()
         supportFragmentManager.beginTransaction()
@@ -146,6 +151,7 @@ class FacilityActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.timeSlotContainer.visibility = View.GONE
         binding.timeSelectionSection.visibility = View.GONE
         binding.btnReserve.isEnabled = false
+
 
         // 날짜 선택 이벤트
         binding.dateChipGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -224,13 +230,28 @@ class FacilityActivity : AppCompatActivity(), OnMapReadyCallback {
                     chip.setChipBackgroundColorResource(R.color.red_primary)  // 배경색 변경
                     chip.setTextColor(ContextCompat.getColor(this, R.color.black_primary))  // 텍스트 색상 변경
                     selectedDate = date
+
+                    // 시간 선택 UI만 표시, 버튼 비활성화
+                    binding.timelineContainer.visibility = View.VISIBLE
+                    binding.timeSlotContainer.visibility = View.VISIBLE
+                    binding.timeSelectionSection.visibility = View.GONE
+                    binding.btnReserve.isEnabled = false
+
+                    showTimeSelection(date)  // 날짜 선택 시 시간 선택 UI 활성화
+
                 } else {
                     // 날짜 선택 취소 시
                     chip.setChipBackgroundColorResource(R.color.black_primary)  // 기본 배경색으로 리셋
                     chip.setTextColor(ContextCompat.getColor(this, R.color.white))  // 기본 텍스트 색상으로 리셋
                     selectedDate = null
+
+                    // 모든 선택 UI 숨기고 버튼 비활성화
+                    binding.timelineContainer.visibility = View.GONE
+                    binding.timeSlotContainer.visibility = View.GONE
+                    binding.timeSelectionSection.visibility = View.GONE
+                    binding.btnReserve.isEnabled = false
                 }
-                showTimeSelection(date)  // 날짜 선택 시 시간 선택 UI 활성화
+
             }
         }
     }
@@ -252,11 +273,10 @@ class FacilityActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.timeSlotContainer.visibility = View.VISIBLE
 
         // 선택된 날짜에 맞는 시간 정보 설정 (예시로 9 AM ~ 5 PM)
-        binding.timeSummary.text = "${date?.monthValue ?: 0}/${date?.dayOfMonth ?: 0} 9 AM ~ 5 PM"
+        //binding.timeSummary.text = "${date?.monthValue ?: 0}/${date?.dayOfMonth ?: 0} 9 AM ~ 5 PM"
 
         // 예약 버튼 활성화
         binding.timeSelectionSection.visibility = View.VISIBLE
-        binding.btnReserve.isEnabled = true
     }
 
     // 시간 슬롯 스타일 처리

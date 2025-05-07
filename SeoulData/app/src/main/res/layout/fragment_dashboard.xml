@@ -19,7 +19,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_review_board"
             android:layout_width="0dp"
-            android:layout_height="140dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="8dp"
             app:cardCornerRadius="16dp"
@@ -62,7 +62,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="이용하신 소중한 경험을 \n후기로 들려주세요"
+                    android:text="이용하신 소중한 경험을 후기로 들려주세요"
                     android:textSize="15dp"
                     android:textStyle="bold"
                     android:textColor="@color/white"

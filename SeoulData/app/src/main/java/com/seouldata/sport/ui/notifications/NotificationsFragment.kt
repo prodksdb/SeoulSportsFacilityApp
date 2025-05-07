@@ -11,15 +11,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.seouldata.sport.LoginActivity
 import com.seouldata.sport.databinding.FragmentNotificationsBinding
 import com.seouldata.sport.dto.InventoryItem
 import com.seouldata.sport.ui.adapter.InventoryAdapter
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.seouldata.sport.R
 
 class NotificationsFragment : Fragment() {
 
@@ -187,6 +194,24 @@ class NotificationsFragment : Fragment() {
             duration = 1000
             start()
         }
+
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+
+
+        // 회원 탈퇴 버튼 클릭
+        binding.btnDeleteAccount.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("회원 탈퇴")
+                .setMessage("정말로 탈퇴하시겠어요?\n모든 데이터가 삭제됩니다")
+                .setPositiveButton("네") { _, _ -> performAccountDeletion() }
+                .setNegativeButton("아니요", null)
+                .show()
+        }
     }
 
     private fun toggleEditMode(enabled: Boolean) {
@@ -228,6 +253,74 @@ class NotificationsFragment : Fragment() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         context.startActivity(intent)
     }
+
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private val RC_REAUTH = 9002
+
+    private fun performAccountDeletion() {
+        // ① Silent Sign-In 시도
+        googleSignInClient.silentSignIn()
+            .addOnSuccessListener { account ->
+                account.idToken?.let { reauthenticateWithToken(it) } ?: promptInteractiveSignIn()
+            }
+            .addOnFailureListener {
+                // ② Silent 실패 → 인터랙티브 로그인
+                promptInteractiveSignIn()
+            }
+    }
+
+    private fun reauthenticateWithToken(idToken: String) {
+        val user = FirebaseAuth.getInstance().currentUser ?: return
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        user.reauthenticate(credential)
+            .addOnSuccessListener { deleteAccountData(user.uid) }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "재인증에 실패했습니다", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun deleteAccountData(uid: String) {
+        val db = FirebaseFirestore.getInstance()
+        // Firestore 삭제
+        db.collection("users").document(uid)
+            .delete()
+            .addOnSuccessListener {
+                // Auth 계정 삭제
+                FirebaseAuth.getInstance().currentUser?.delete()
+                    ?.addOnSuccessListener {
+                        requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                            .edit().clear().apply()
+                        Intent(requireContext(), LoginActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(this)
+                        }
+                        Toast.makeText(requireContext(), "회원 탈퇴가 완료되었습니다", Toast.LENGTH_SHORT).show()
+                    }
+                    ?.addOnFailureListener {
+                        Toast.makeText(requireContext(), "계정 삭제 중 오류가 발생했습니다", Toast.LENGTH_SHORT).show()
+                    }
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "데이터 삭제에 실패했습니다", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private val reauthLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        if (task.isSuccessful) {
+            task.result.idToken?.let { reauthenticateWithToken(it) }
+        } else {
+            Toast.makeText(requireContext(), "재인증에 실패했습니다", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun promptInteractiveSignIn() {
+        reauthLauncher.launch(googleSignInClient.signInIntent)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

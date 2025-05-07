@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.api.LogDescriptor
 import com.google.firebase.database.FirebaseDatabase
 import com.seouldata.sport.FacilityActivity
 import com.seouldata.sport.MapDialogFragment
@@ -227,12 +228,13 @@ class HomeFragment : Fragment() {
 
     // 좌표를 실제 주소로 변환하는 함수
     private fun getAddressFromLocation(lat: Double, lon: Double) {
-        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+        val geocoder = Geocoder(requireContext(), Locale.KOREA)
         val addresses = geocoder.getFromLocation(lat, lon, 1)
         if (!addresses.isNullOrEmpty()) {
             val address = addresses[0]
             val city = address.adminArea ?: ""
             val district = address.subLocality ?: address.subAdminArea ?: ""
+            Log.d(TAG, "district: $district")
 
             // 기존 district와 같으면 재로딩하지 않음
             if (district == currentDistrict && firstLoadDone) {
