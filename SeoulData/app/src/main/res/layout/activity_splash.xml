@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
   >
 
+
     <ImageView
         android:layout_width="260dp"
         android:layout_height="260dp"
         android:layout_gravity="center"
         android:scaleType="fitCenter"
-        android:src="@drawable/app_icon2" />
+        android:src="@drawable/app_logo" />
 </FrameLayout>

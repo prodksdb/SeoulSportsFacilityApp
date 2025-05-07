@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SeoulData</string>
+    <string name="app_name">서울 스폿잇</string>
     <string name="title_home">시설 찾기</string>
     <string name="title_dashboard">내 활동</string>
     <string name="title_notifications">프로필</string>

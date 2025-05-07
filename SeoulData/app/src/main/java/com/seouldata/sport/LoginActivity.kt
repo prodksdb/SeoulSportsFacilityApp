@@ -1,7 +1,11 @@
 package com.seouldata.sport
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.view.animation.OvershootInterpolator
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -13,10 +17,12 @@ import com.seouldata.sport.util.UserExpManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.animation.AnimatorSetCompat.playTogether
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.NonCancellable.start
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -51,6 +57,23 @@ class LoginActivity : AppCompatActivity() {
         val googleLoginButton = findViewById<LinearLayout>(R.id.btn_google_login)
         googleLoginButton.setOnClickListener {
             signIn()
+        }
+
+        // TextView에 스케일 애니메이션 적용
+        val textScaleX = ObjectAnimator.ofFloat(binding.tvInfo, "scaleX", 1f, 1.1f, 1f)
+        val textScaleY = ObjectAnimator.ofFloat(binding.tvInfo, "scaleY", 1f, 1.1f, 1f)
+
+// 반복 설정
+        textScaleX.repeatCount = ValueAnimator.INFINITE
+        textScaleX.repeatMode = ValueAnimator.REVERSE
+        textScaleY.repeatCount = ValueAnimator.INFINITE
+        textScaleY.repeatMode = ValueAnimator.REVERSE
+
+        AnimatorSet().apply {
+            playTogether(textScaleX, textScaleY)
+            duration = 1200                 // 속도 조절 가능
+           // interpolator = OvershootInterpolator(2f)  // 튀는 느낌 강조
+            start()
         }
     }
 
