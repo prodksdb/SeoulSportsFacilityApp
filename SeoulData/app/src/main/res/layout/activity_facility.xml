@@ -62,8 +62,7 @@
                 android:id="@+id/facilityImage"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/sample_facility" />
+                android:scaleType="centerCrop" />
 
 
             <!--날짜 시간 선택-->

@@ -21,7 +21,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.649">
+        app:layout_constraintVertical_bias="0.842">
 
         <!-- 로고 -->
 
@@ -53,90 +53,90 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_logo" />
 
-        <EditText
-            android:id="@+id/et_userName"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/rounded_edittext"
-            android:drawableStart="@drawable/ic_user"
-            android:hint=" Username"
-            android:inputType="text"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_info" />
+        <!--        <EditText-->
+        <!--            android:id="@+id/et_userName"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:layout_marginStart="32dp"-->
+        <!--            android:layout_marginTop="32dp"-->
+        <!--            android:layout_marginEnd="32dp"-->
+        <!--            android:background="@drawable/rounded_edittext"-->
+        <!--            android:drawableStart="@drawable/ic_user"-->
+        <!--            android:hint=" Username"-->
+        <!--            android:inputType="text"-->
+        <!--            android:paddingStart="16dp"-->
+        <!--            android:paddingEnd="16dp"-->
+        <!--            android:textStyle="bold"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/tv_info" />-->
 
-        <!-- 비밀번호 -->
-        <EditText
-            android:id="@+id/et_password"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/rounded_edittext"
-            android:drawableStart="@drawable/ic_lock"
-            android:hint=" Password"
-            android:inputType="textPassword"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_userName" />
+        <!--        &lt;!&ndash; 비밀번호 &ndash;&gt;-->
+        <!--        <EditText-->
+        <!--            android:id="@+id/et_password"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:layout_marginStart="32dp"-->
+        <!--            android:layout_marginTop="12dp"-->
+        <!--            android:layout_marginEnd="32dp"-->
+        <!--            android:background="@drawable/rounded_edittext"-->
+        <!--            android:drawableStart="@drawable/ic_lock"-->
+        <!--            android:hint=" Password"-->
+        <!--            android:inputType="textPassword"-->
+        <!--            android:paddingStart="16dp"-->
+        <!--            android:paddingEnd="16dp"-->
+        <!--            android:textStyle="bold"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/et_userName" />-->
 
-        <!-- 버튼 그룹 -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/btn_group"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_password">
+        <!--        &lt;!&ndash; 버튼 그룹 &ndash;&gt;-->
+        <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+        <!--            android:id="@+id/btn_group"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="32dp"-->
+        <!--            android:layout_marginTop="20dp"-->
+        <!--            android:layout_marginEnd="32dp"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/et_password">-->
 
-            <Button
-                android:id="@+id/btn_login"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="8dp"
-                android:backgroundTint="@color/black_primary"
-                android:text="로그인"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/btn_join"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <!--            <Button-->
+        <!--                android:id="@+id/btn_login"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="50dp"-->
+        <!--                android:layout_marginEnd="8dp"-->
+        <!--                android:backgroundTint="@color/black_primary"-->
+        <!--                android:text="로그인"-->
+        <!--                android:textColor="#FFFFFF"-->
+        <!--                android:textStyle="bold"-->
+        <!--                app:layout_constraintEnd_toStartOf="@id/btn_join"-->
+        <!--                app:layout_constraintHorizontal_weight="1"-->
+        <!--                app:layout_constraintStart_toStartOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-            <Button
-                android:id="@+id/btn_join"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="#666666"
-                android:text="회원가입"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@id/btn_login"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--            <Button-->
+        <!--                android:id="@+id/btn_join"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="50dp"-->
+        <!--                android:layout_marginStart="8dp"-->
+        <!--                android:backgroundTint="#666666"-->
+        <!--                android:text="회원가입"-->
+        <!--                android:textColor="#FFFFFF"-->
+        <!--                android:textStyle="bold"-->
+        <!--                app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                app:layout_constraintHorizontal_weight="1"-->
+        <!--                app:layout_constraintStart_toEndOf="@id/btn_login"-->
+        <!--                app:layout_constraintTop_toTopOf="parent" />-->
+        <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/btn_google_login"
         android:layout_width="260dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="96dp"
+        android:layout_marginBottom="188dp"
         android:background="@drawable/bg_google_button"
         android:gravity="center_vertical"
         android:orientation="horizontal"
